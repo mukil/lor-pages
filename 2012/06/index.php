@@ -19,8 +19,11 @@ print '<html><head><title>Die '.$lor.' LOR-Seiten</title>'
         .'<script src="libs/raphael-min.js"></script>'
         .'<script src="libs/g.raphael-min.js"></script>'
         .'<script src="libs/g.line-min.js"></script>'
+        .'<script src="libs/OpenLayers.js"></script>'
+        .'<script src="kml-layer.js"></script>'
         .'<script>'
             .'window.onload = function () {'
+                .'var lor_id = '.json_encode($lor).';'
                 .'var ages = [1,2,3,5,6,7,8,10,12,14,15,18,21,25,27,30,35,40,45,50,55,60,63,65,67,70,75,80,85,90,95,110];'
                 .'var berlin_ages = '.json_encode($berlin_ages).';'
                 .'var lor_ages = '.json_encode($lor_ages).';'
@@ -38,6 +41,7 @@ print '<html><head><title>Die '.$lor.' LOR-Seiten</title>'
                     .'this.tags && this.tags.remove();'
                 .'});'
                 .'chart.symbols.attr({ r: 5 });'
+                .'setupMapNavigation(lor_id);'
              .'}'
         .'</script>'
       .'</head><body>';
@@ -633,6 +637,13 @@ function render_history_list($id) {
 
 }
 
+function render_city_navigation() {
+    return '<h3 id="nav-header">Navigation und geografische Ansicht zu diesem Planungsraum</h3>'
+        .' <div id="berlin-citymap"></div><p class="footer" style="padding-left: 60px;">'
+        .' <a href="http://www.openstreetmap.org">OpenStreetMap.org</a> Kartenmaterial CC-BY-SA<br/><br/>'
+        .' &nbsp;Erweiterte LOR-Geometrie (KML) basiert auf <a href="http://www.statistik-berlin-brandenburg.de/produkte/opendata/geometrienOD.asp?Kat=6301">07/2012</a> CC-BY,  Amt f&uuml;r Statistik Berlin-Brandenburg<br/></p>';
+}
+
 // --
 // --- Rendering lor-page body
 // --
@@ -657,6 +668,8 @@ print $table2;
 print $table3;
 
 print render_history_list($lor);
+
+print render_city_navigation();
 
 print $monitoring;
 
