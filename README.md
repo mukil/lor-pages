@@ -1,12 +1,12 @@
 # About LOR-Pages
 
-The LOR-Pages assemble, polish and publish 3 datasets containing anonymous statistical information on the inhabitants of  Berlin, Germany. These datasets are published on 1 page per LOR, while an LOR contains roughly up to 40 000 inhabitants and thus presents you information about a very small area, like a block or street in Berlin.
+The LOR-Pages assemble, polish and publish 6 datasets containing anonymous statistical information on the inhabitants of Berlin, Germany. These datasets are published on 1 page per LOR, while an LOR contains between 1 000 to 30 000 inhabitants. LORs thus present you information about a very small area, like two or three blocks in Berlin.
 
 Identify the LOR of your interest through giving the streetname into the form at http://www.kiezatlas.de/sozialraumdaten/
 
 # Technology
 
-The data of the LOR-Pages comes from simple .CSV-files. The rows in the dataset are parsed, structured and statistically polished with PHP. The presentation of the stats is done in simple HTML in tables along with some JavaScript and the cross-browser vector graphics library raphael and it's tiny sister g.raphael.js (http://raphaeljs.com/), while both are licensed under the MIT License (http://raphaeljs.com/license.html).
+The data of the LOR-Pages comes from simple .CSV-files. The rows in the dataset are parsed, structured and statistically polished with PHP. The presentation of the stats is done in simple HTML in tables along with some JavaScript and the cross-browser vector graphics library raphael and it's tiny sister g.raphael.js (http://raphaeljs.com/), while both are licensed under the MIT License (http://raphaeljs.com/license.html). Additional there is OpenLayers (http://www.openlayers.org) in use to enable geographical naviation between all available LORs.
 
 # Licenses
 
@@ -18,3 +18,5 @@ All other scripts and documents in this repository are herewith liberately publi
 
 The copyright (2013) for the statistical analysis which are based on personal insight into the datasets belong to the GskA gemeinnützige Gesellschaft für sozial-kulturelle Arbeit mbH Berlin. This project was generously made possible through Projekt Network in collaboration with the office for info-work, www.mikromedia.de
 
+Copyright 2013 by Malte Reißig
+Last updated: 7th April 2013
