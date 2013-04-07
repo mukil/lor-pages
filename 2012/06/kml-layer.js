@@ -4,6 +4,14 @@
 
 function setupMapNavigation(lor_id) {
 
+    // set initial map view to berlin city
+    var bounds = new OpenLayers.Bounds()
+        bounds.extend(new OpenLayers.LonLat(13.2023,52.344400))
+        bounds.extend(new OpenLayers.LonLat(13.7423,52.642415))
+        bounds.toBBOX()
+
+    var osm_tiles = new OpenLayers.Layer.OSM("OpenStreetMap (Mapnik)")
+
     var map = new OpenLayers.Map("berlin-citymap", {
         controls: [
             new OpenLayers.Control.Navigation(),
@@ -13,9 +21,7 @@ function setupMapNavigation(lor_id) {
             new OpenLayers.Control.MousePosition(),
             new OpenLayers.Control.OverviewMap(),
             new OpenLayers.Control.KeyboardDefaults()
-        ], layers: [
-            new OpenLayers.Layer.OSM("OpenStreetMap (Mapnik)")
-        ],
+        ], layers: [ osm_tiles ],
         projection: new OpenLayers.Projection("EPSG:900913"), 
         displayProjection: new OpenLayers.Projection("EPSG:4326"),
         zoom: 12
@@ -43,12 +49,8 @@ function setupMapNavigation(lor_id) {
         })
     })
 
-    // set initial map view to berlin city
-    var bounds = new OpenLayers.Bounds();
-        bounds.extend(new OpenLayers.LonLat(13.2023,52.344400));
-        bounds.extend(new OpenLayers.LonLat(13.7423,52.642415));
-        bounds.toBBOX(); // returns 4,5,5,6
-    map.zoomToExtent( bounds.transform(map.displayProjection, map.projection) );
+    map.zoomToExtent( bounds.transform(map.displayProjection, map.projection) )
+    // osm_tiles.addOptions({ maxExtent: bounds }, true)
 
     select = new OpenLayers.Control.SelectFeature(lor, { hover: false, highlightOnly: true })
     map.addControl(select)
@@ -57,8 +59,7 @@ function setupMapNavigation(lor_id) {
     lor.events.on({
         "featureselected": onFeatureSelect,
         "featureunselected": onFeatureUnselect,
-        "loadend": function(e){ 
-            console.log("loaded..") 
+        "loadend": function(e) {
             selectLorMarker(lor_id, lor, select, map)
         }
     })
@@ -67,8 +68,8 @@ function setupMapNavigation(lor_id) {
     lor.redraw()
 
     function onFeatureSelect(event) {
-        var feature = event.feature;
-        var selectedFeature = feature;
+        var feature = event.feature
+        var selectedFeature = feature
         if (lor_id == "0" + feature['fid']) {
             // selected feature is current page, dont' render any outgoing link
         } else {
@@ -76,21 +77,21 @@ function setupMapNavigation(lor_id) {
             var popup = new OpenLayers.Popup.Anchored("link", 
                 feature.geometry.getBounds().getCenterLonLat(),
                 new OpenLayers.Size(50,50),
-                '<a href="/maps/lor/?lor=' + lorId+ '">' +feature.data['name']+ '</a>',
+                '<a href="/~lor/seiten/2012/06/?lor=' + lorId+ '">' +feature.data['name']+ '</a>',
                 null, false, function(e) { popup.destroy() }
             );
-            popup.autoSize = true;
+            popup.autoSize = true
             popup.panMapIfOutOfView = true;
-            feature.popup = popup;
+            feature.popup = popup
             map.addPopup(popup);
         }
     }
     function onFeatureUnselect(event) {
         var feature = event.feature;
         if (feature.popup) {
-            map.removePopup(feature.popup);
-            feature.popup.destroy();
-            delete feature.popup;
+            map.removePopup(feature.popup)
+            feature.popup.destroy()
+            delete feature.popup
         }
     }
 

@@ -14,7 +14,8 @@ $lor_ages = array($age_row['00_01-avg'], $age_row['01_02-avg'], $age_row['02_03-
 
 $berlin_ages = array($age_row['00-01-avg'], $age_row['01-02-avg'], $age_row['02-03-avg'], $age_row['03-05-avg'], $age_row['05-06-avg'], $age_row['06-07-avg'], $age_row['07-08-avg'], $age_row['08-10-avg'], $age_row['10-12-avg'], $age_row['12-14-avg'], $age_row['14-15-avg'], $age_row['15-18-avg'], $age_row['18-21-avg'], $age_row['21-25-avg'], $age_row['25-27-avg'], $age_row['27-30-avg'], $age_row['30-35-avg'], $age_row['35-40-avg'], $age_row['40-45-avg'], $age_row['45-50-avg'], $age_row['50-55-avg'], $age_row['55-60-avg'], $age_row['60-63-avg'], $age_row['63-65-avg'], $age_row['65-67-avg'], $age_row['67-70-avg'], $age_row['70-75-avg'], $age_row['75-80-avg'], $age_row['80-85-avg'], $age_row['85-90-avg'], $age_row['90-95-avg'], $age_row['95-110-avg']);
 
-print '<html><head><title>Die '.$lor.' LOR-Seiten</title>'
+print '<html><head><title>Die '.$lor_names['lor_name'].' LOR-Seite</title>'
+        .'<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-15">'
         .'<link rel="stylesheet" type="text/css" href="pages.css"></link>'
         .'<script src="libs/raphael-min.js"></script>'
         .'<script src="libs/g.raphael-min.js"></script>'
@@ -68,7 +69,7 @@ function render_migration_table($dataset) {
 
     $tab1 = "";
     $tab1 .= '<h3>1. Tabelle: Melderechtlich registrierte EinwohnerInnen nach Migrationshintergrund* '
-        .'(Datenstand: Dezember 2011)<a name="migration">&nbsp;</a></h3>';
+        .'(Datenstand: Juni 2012)<a name="migration">&nbsp;</a></h3>';
     $tab1 .= '<table id="migration-data-1"><tr><thead><td>Migrationshintergrund</td><td>Absolute Zahl</td>'
         .'<td>Prozentwert</td><td>Berliner Durchschnitt</td></thead></tr>';
     $tab1 .= '<tr class="buffer"><td colspan="4"></td></tr>';
@@ -82,15 +83,15 @@ function render_migration_table($dataset) {
         .'<td>&nbsp;</td><td>&nbsp;</td></tr>'
         .'<tr><td colspan="4" class="footer">Quelle: <a '
         .'href="http://www.statistik-berlin-brandenburg.de/home.asp">'
-        .'Amt f&uuml;r Statistik Berlin-Brandenburg</a>, Abgestimmter Datenpool (31.12.2011)<br/></td></tr>';
+        .'Amt f&uuml;r Statistik Berlin-Brandenburg</a>, Abgestimmter Datenpool Juni 2012<br/></td></tr>';
     $tab1 .= '</table>';
 
     $tab1 .= '<div class="footer">(*) In der Einwohnerregisterstatistik werden als Personen mit Migrationshintergrund '
         .'ausgewiesen:<ol><li>Ausl&auml;ndische Staatsangeh&ouml;rige</li><li>Deutsche mit Migrationshintergrund<ul>'
         .'<li>Deutsche mit ausl&auml;ndischem Geburtsland oder Einb&uuml;rgerungskennzeichen oder Optionskennzeichen
-(im Inland geborene Kinder ausl&auml;ndischer Eltern erhalten seit dem 1. Januar 2000 unter den in § 4
+(im Inland geborene Kinder ausl&auml;ndischer Eltern erhalten seit dem 1. Januar 2000 unter den in &sect; 4
 Abs. 3 Staatangeh&ouml;rigkeitsgesetz (StAG) genannten Voraussetzungen zun&auml;chst die deutsche
-Staatsangeh&ouml;rigkeit (Optionsregelung));</li>'
+Staatsangeh&ouml;rigkeit (Optionsregelung)).</li>'
         .'<li>Deutsche unter 18 Jahren ohne eigene Migrationsmerkmale mit ausl&auml;ndischem Geburtsland oder Ein-
 b&ouml;rgerungskennzeichen zumindest eines Elternteils, wenn die Person an der Adresse der Eltern/des
 Elternteils gemeldet ist.</li></ul></li>'
@@ -143,7 +144,7 @@ function render_citizen_table($dataset) {
     $inhabitants_migrated_avg = $dataset['inhabitants_migrated-avg'];
 
     $table = "";
-    $table .= '<h3>2. Tabelle: Staatsangeh&ouml;rigkeit ausgew&auml;hlter L&auml;nder (Datenstand: Dezember 2011)'
+    $table .= '<h3>2. Tabelle: Staatsangeh&ouml;rigkeit ausgew&auml;hlter L&auml;nder (Datenstand: Juni 2012)'
         .'<a name="staaten">&nbsp;</a></h3>';
     $table .= 'von insgesamt '.$inhabitants.' BewohnerInnen in diesem Planungsraum';
     $table .= '<table cellspacing="0px" cellpadding="0px" id="migration-data-1"><tr><thead>'
@@ -172,7 +173,7 @@ function render_citizen_table($dataset) {
             .'<td>'.$other_migrants_key.' %</td><td class="average">'.$other_countries_avg.' %</td></tr>'
             .'<tr><td colspan="4" class="footer">Quelle: <a '
             .'href="http://www.statistik-berlin-brandenburg.de/home.asp">'
-            .'Amt f&uuml;r Statistik Berlin-Brandenburg</a>, Abgestimmter Datenpool (31.12.2011)<br/></td></tr>';
+            .'Amt f&uuml;r Statistik Berlin-Brandenburg</a>, Abgestimmter Datenpool Juni 2012<br/></td></tr>';
     $table .= '<tr class="buffer"><td class="footer" colspan="4">(*) die ersten 15 Mitgliedsl&auml;nder der Europ&auml;ischen '
         .'Union<br/>(**) ohne Polen</td></tr>';
     $table .= '</table>';
@@ -225,7 +226,7 @@ function render_age_table($dataset, $lor) {
     $hundredten = (int) $dataset['95_110'];
 
     $tab1 = "";
-    $tab1 .= '<h3>3. Tabelle: Altersverteilung "'.$lor['lor_name'].'", Berlin-'.$lor['district'].' (Datenstand: Dezember 2011) '
+    $tab1 .= '<h3>3. Tabelle: Altersverteilung "'.$lor['lor_name'].'", Berlin-'.$lor['district'].' (Datenstand: Juni 2012) '
         .'<a name="altersverteilung">&nbsp;</a></h3>';
     $tab1 .= '<div id="aging-chart"></div><div id="aging-chart-labels">Die X-Achse zeigt die Altersgruppen, die Y-Achse %*'
         .'<div class="lor-bar"></div> in diesem Raum <div class="berlin-bar"></div> im Berliner Durschnitt</div>';
@@ -482,7 +483,7 @@ function get_lor_age_row($id) {
         // print ' male: '.$info[$row]['e_m-avg'].' female: '.$info[$row]['e_w-avg'];
         $info[$row]['00_01-avg'] = round($info[$row]['00_01'] / $percentageBase * 100, 1);
         $info[$row]['01_02-avg'] = round($info[$row]['01_02'] / $percentageBase * 100, 1);
-        $info[$row]['02_03-avg'] = round($info[$row]['02_03'] / $percentageBase * 10, 1);
+        $info[$row]['02_03-avg'] = round($info[$row]['02_03'] / $percentageBase * 100, 1);
         $info[$row]['03_05-avg'] = round($info[$row]['03_05'] / $percentageBase * 100 / 2, 1);
         $info[$row]['05_06-avg'] = round($info[$row]['05_06'] / $percentageBase * 100, 1);
         $info[$row]['06_07-avg'] = round($info[$row]['06_07'] / $percentageBase * 100, 1);
@@ -676,13 +677,13 @@ print $monitoring;
 print $social;
 
 print '<div class="footer">'
-    .'&copy; 2013 f&uuml;r diese Auswertung: '
+    .'&copy; 2013 f&uuml;r diese Auswertung <a href="http://www.spinnenwerk.de/network/" '
+    .'title="Website: Projekt Network" alt="Projekt Network, GskA">Projekt Network</a>, '
     .'<a href="http://www.gska-berlin.de/index.html" title="Website: GskA Berlin" alt="Website: GskA Berlin">'
-    .'GskA gemeinn&uuml;tzige Gesellschaft f&uuml;r sozial-kulturelle Arbeit mbH Berlin</a><br/><br/>'
-    .'Diese LOR-Seiten wurden realisiert durch das <a href="http://www.spinnenwerk.de/network/" '
-    .'title="Website: Projekt Network" alt="Projekt Network, GskA">Projekt Network</a> in Zusammenarbeit mit dem '
+    .'GskA Berlin</a><br/><br/>'
+    .'Diese LOR-Seiten wurden realisiert in Zusammenarbeit mit dem '
     .'<a href="http://www.mikromedia.de" title="Website: mikromedia.de" '
-    .'alt="Website: mikromedia.de">B&uuml;ro f&uuml;r Informationsarbeit</a><br/><br/></div>';
+    .'alt="Website: mikromedia.de">B&uuml;ro f&uuml;r Informationsarbeit</a> und dem <a href="http://www.statistik-berlin-brandenburg.de/">Amt f&uuml;r Statistik Berlin-Brandenburg</a>.<br/><br/></div>';
 
 print '<BODY></HTML>';
 

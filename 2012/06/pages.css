@@ -52,6 +52,7 @@ body {
 
 h2, .footer {
     margin-bottom: 40px;
+    line-height: 1.6em;
 }
 
 td.footer {
