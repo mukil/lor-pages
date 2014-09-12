@@ -63,7 +63,7 @@ print '<html><head><title>Die '.$lor_names['lor_name'].' LOR-Seite</title>'
                     .'this.tags && this.tags.remove();'
                 .'});'
                 .'chart.symbols.attr({ r: 5 });'
-                .'setupMapNavigation(lor_id);'
+                .'setupMapNavigation("2012/06", lor_id);'
              .'}'
         .'</script>'
       .'</head><body>';
@@ -455,7 +455,7 @@ function get_lor_age_row($id) {
 
     // implementation partially copied from http://stackoverflow.com/questions/5299471/php-parsing-a-txt-file
 
-    $txt_file    = file_get_contents('data/EWR201112E_Matrix.csv');
+    $txt_file    = file_get_contents('data/EWR201206E_Matrix-1.csv');
     $rows        = explode("\n", $txt_file);
     array_shift($rows);
     // return values
@@ -644,8 +644,16 @@ function render_social_atlas_data($dataset) {
 }
 
 function render_history_list($id) {
+    //  .'<a title="Direktlink: zu den Daten dieser LOR-Seite von 2012/12" '
+    //    .'href="http://jugendserver.spinnenwerk.de/~lor/seiten/2012/12/?lor='.$id.'">12/2012 (HTML)</a>'
     return '<div class="footer">'
-        .'<h4>Vergleichszahlen aus den fr&uuml;heren Erhebungszeitr&auml;umen finden Sie hier:</h4>'
+        .'<h4>Vergleichszahlen aus den anderen Erhebungszeitr&auml;umen finden Sie hier:</h4>'
+        .'<a title="Direktlink: zu den Daten dieser LOR-Seite von 2013/06" '
+        .'href="http://jugendserver.spinnenwerk.de/~lor/seiten/2013/06/?lor='.$id.'">06/2013 (HTML)</a>'
+        .'<a title="Direktlink: zu den Daten dieser LOR-Seite von 2012/12" '
+        .'href="http://jugendserver.spinnenwerk.de/~lor/seiten/2012/12/?lor='.$id.'">12/2012 (HTML)</a>'
+        .'<a title="Direktlink: zu den Daten dieser LOR-Seite von 2011/12" '
+        .'href="http://jugendserver.spinnenwerk.de/~lor/seiten/2011/12/?lor='.$id.'">12/2011 (HTML)</a>'
         .'<a title="Direktlink: PDF (~280 KByte)" alt="Direktlink: PDF (~280 KByte)" '
         .'href="http://jugendserver.spinnenwerk.de/~lor/analysen_06_2011/'.$id.'.pdf">06/2011 (PDF)</a>'
         .'<a title="Direktlink: PDF (~280 KByte)" alt="Direktlink: PDF (~280 KByte)" '
