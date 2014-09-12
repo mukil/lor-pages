@@ -1,6 +1,27 @@
 <?php
 
-$lor = $_GET['lor']; // fixme
+$lor = 0;
+
+// Main Controler LOR-Pages
+if (isset($_GET['lor'])) {
+    // # doors / imagemap entry: selects current day with JS, after loading all images
+    $lor = $_GET['lor'];
+    $lor = split(";", $lor); // checking input for a ";"
+    if (count($lor) == 1) {
+        // parameter without a ";", checking for url-encoded alias of ";"
+        $pos = strpos("%3B", $lor);
+        if ($pos === true) {
+            echo ("Input to big, unwanted access.");
+            throw new Exception(404);
+        } else {
+            // ok now, we use intval / lor to go on
+            $lor = $lor[0];
+        }
+    } else {
+        echo ("Input to big, unwanted access.");
+        throw new Exception(404);
+    }
+}
 
 $lor_names = get_lor_names($lor);
 $migration_row = get_lor_migration_row($lor);
