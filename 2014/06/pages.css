@@ -110,6 +110,20 @@ td.footer {
     background-color: transparent !important;
 }
 
+.diagram-layer-controls span {
+    padding: 4px;
+    padding-left: 7px;
+    padding-right: 7px;
+}
+
+.diagram-layer-controls span.selected,
+.diagram-layer-controls span:hover {
+    cursor: pointer;
+    background-color: #bf5a2f;
+    color: #fff;
+    text-decoration: none;
+}
+
 #link a {
     background-color: #fff;
     text-decoration: none;

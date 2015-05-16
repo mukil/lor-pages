@@ -14,7 +14,7 @@ if (isset($_GET['lor'])) {
             echo ("Input to big, unwanted access.");
             throw new Exception(404);
         } else {
-            // ok now, we use intval / lor to go on
+            // ok now, we dont use intval / lor to go on cause of leading zeros in id-s
             $lor = $lor[0];
         }
     } else {
@@ -41,9 +41,13 @@ print '<html><head><title>Die '.$lor_names['lor_name'].' LOR-Seite</title>'
         .'<script src="libs/raphael-min.js"></script>'
         .'<script src="libs/g.raphael-min.js"></script>'
         .'<script src="libs/g.line-min.js"></script>'
+        .'<script src="libs/jquery-1.11.3.min.js"></script>'
         .'<script src="libs/OpenLayers.js"></script>'
         .'<script src="kml-layer.js"></script>'
         .'<script>'
+            .'var global_chart;'
+            .'var berlin_percentages;'
+            .'var lor_current_percentages;'
             .'window.onload = function () {'
                 .'var lor_id = '.json_encode($lor).';'
                 .'var ages = [1,2,3,5,6,7,8,10,12,14,15,18,21,25,27,30,35,40,45,50,55,60,63,65,67,70,75,80,85,90,95,110];'
@@ -53,7 +57,6 @@ print '<html><head><title>Die '.$lor_names['lor_name'].' LOR-Seite</title>'
                 .'var chart = r.linechart(15, 30, 700, 270, '
                     .'[ages], [lor_ages, berlin_ages], '
                     .'{smooth: true, axis: "0 0 1 1", symbol: "circle", axisxstep: 100 });' // colors: ["#FF0"]
-                
                 .'chart.hoverColumn(function () {'
                     .'this.tags = r.set();'
                     .'for (var i = 0, ii = this.y.length; i < ii; i++) {'
@@ -63,11 +66,18 @@ print '<html><head><title>Die '.$lor_names['lor_name'].' LOR-Seite</title>'
                 .'}, function () {'
                     .'this.tags && this.tags.remove();'
                 .'});'
-
+                // keep our currente data in JS
+                .'global_chart = chart;'
+                .'lor_current_percentages = lor_ages;'
+                .'berlin_percentages = berlin_ages;'
+                // style
                 .'chart.symbols.attr({ r: 5 });'
                 .'setupMapNavigation("2014/06", lor_id);'
             .'}'
         .'</script>'
+
+        .'<script src="/~malte/lor-page-diagram.js"></script>'
+
       .'</head><body>';
 
 /* print '<div class="navigation">'
@@ -112,7 +122,6 @@ function render_migration_table($dataset) {
         .'href="http://www.statistik-berlin-brandenburg.de/home.asp">'
         .'Amt f&uuml;r Statistik Berlin-Brandenburg</a>, Abgestimmter Datenpool Juni 2014<br/></td></tr>';
     $tab1 .= '</table>';
-
     $tab1 .= '<div class="footer">(*) In der Einwohnerregisterstatistik werden als Personen mit Migrationshintergrund '
         .'ausgewiesen:<ol><li>Ausl&auml;ndische Staatsangeh&ouml;rige</li><li>Deutsche mit Migrationshintergrund<ul>'
         .'<li>Deutsche mit ausl&auml;ndischem Geburtsland oder Einb&uuml;rgerungskennzeichen oder Optionskennzeichen
@@ -210,7 +219,7 @@ function render_citizen_table($dataset) {
 
 }
 
-function render_age_table($dataset, $lor) {
+function render_age_table($dataset, $lor_names, $id) {
 
     // get meta data
     $timestamp = (int) $dataset['timestamp'];
@@ -253,10 +262,25 @@ function render_age_table($dataset, $lor) {
     $hundredten = (int) $dataset['95_110'];
 
     $tab1 = "";
-    $tab1 .= '<h3>3. Tabelle: Altersverteilung "'.$lor['lor_name'].'", Berlin-'.$lor['district'].' (Datenstand: Juni 2014) '
+    $tab1 .= '<h3>3. Tabelle: Altersverteilung "'.$lor_names['lor_name'].'", Berlin-'.$lor_names['district'].' (Datenstand: Juni 2014) '
         .'<a name="altersverteilung">&nbsp;</a></h3>';
     $tab1 .= '<div id="aging-chart"></div><div id="aging-chart-labels">Die X-Achse zeigt die Altersgruppen, die Y-Achse %*'
         .'<div class="lor-bar"></div> in diesem Raum <div class="berlin-bar"></div> im Berliner Durschnitt</div>';
+
+    $tab1 .= '<div class="diagram-layer-controls">'
+        .'<h4>Vergleichen sie die aktuelle Altersverteilung mit einer der folgenden St&auml;nde:</h4>'
+        .'<span title="Vergleichen sie die aktuellen Werte mit dem Stand Dezember 2011" '
+            . 'onclick="update_diagram(this, 201112, '.'\''.$id.'\''.');">Dez. 2011</span>&nbsp;'
+        .'<span title="Vergleichen sie die aktuellen Werte mit dem Stand Juni 2012" '
+            . 'onclick="update_diagram(this, 201206, '.'\''.$id.'\''.');">Juni 2012</span>&nbsp;'
+        .'<span title="Vergleichen sie die aktuellen Werte mit dem Stand Dezember 2012" '
+            . 'onclick="update_diagram(this, 201212, '.'\''.$id.'\''.');">Dez. 2012</span>&nbsp;'
+        .'<span title="Vergleichen sie die aktuellen Werte mit dem Stand Juni 2013" '
+            . 'onclick="update_diagram(this, 201306, '.'\''.$id.'\''.');">Juni 2013</span>&nbsp;'
+        .'<span title="Vergleichen sie die aktuellen Werte mit dem Stand Dezember 2013" '
+            . 'onclick="update_diagram(this, 201312, '.'\''.$id.'\''.');">Dez. 2013</span>&nbsp;'
+        .'</div>';
+
     $tab1 .= '<table id="migration-data-1"><tr><thead><td>Altersgruppe</td><td>Absolute Zahl</td>'
         .'<td>Prozentwert im<br/>LOR*</td><td>Prozentwert im<br/>Berliner Durchschnitt*</td></thead></tr>';
     $tab1 .= '<tr class="buffer"><td colspan="4"></td></tr>';
@@ -672,7 +696,6 @@ function render_history_list($id) {
         .'href="http://jugendserver.spinnenwerk.de/~lor/analysen_2009/'.$id.'.pdf">2009 (PDF)</a>'
         .'<a title="Direktlink: PDF (~280 KByte)" alt="Direktlink: PDF (~280 KByte)" '
         .'href="http://jugendserver.spinnenwerk.de/~lor/analysen_2008/'.$id.'.pdf">2008 (PDF)</a></div>';
-
 }
 
 function render_city_navigation() {
@@ -689,7 +712,7 @@ function render_city_navigation() {
 
 $table1 = render_migration_table($migration_row);
 $table2 = render_citizen_table($citizen_row);
-$table3 = render_age_table($age_row, $lor_names);
+$table3 = render_age_table($age_row, $lor_names, $lor);
 // $monitoring = render_monitoring_data($monitoring_data);
 // $social = render_social_atlas_data($social_data);
 
