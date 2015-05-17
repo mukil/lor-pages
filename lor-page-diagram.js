@@ -23,7 +23,7 @@ function update_diagram (target, as_of, lor_id) {
     var url = "/~malte/"+year_string+"/calculation.php?lor=" + lor_id
 
     $.get(url, function (data) {
-        var result = JSON.parse(JSON.parse(data))
+        var result = JSON.parse(data)
         var new_line = []
         for (var idx in result.data) {
             var element = result.data[idx]

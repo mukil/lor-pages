@@ -2,7 +2,7 @@
 
 $lor = 0;
 
-// Main Controler LOR-Pages
+// Main Controler LOR-JSON Assembler
 if (isset($_GET['lor'])) {
     // # doors / imagemap entry: selects current day with JS, after loading all images
     $lor = $_GET['lor'];
@@ -21,11 +21,14 @@ if (isset($_GET['lor'])) {
         echo ("Input to big, unwanted access.");
         throw new Exception(404);
     }
+} else if (isset($_GET['agegroup_id'])) { //** isset?? */
+    $lor = -1;
+    $agegroup_id = $_GET['agegroup_id'];
 }
+
 
 $lor_names = get_lor_names($lor);
 $age_row = get_lor_age_row($lor);
-
 $berlin_ages = array($age_row['00-01-avg'], $age_row['01-02-avg'], $age_row['02-03-avg'], $age_row['03-05-avg'], $age_row['05-06-avg'], $age_row['06-07-avg'], $age_row['07-08-avg'], $age_row['08-10-avg'], $age_row['10-12-avg'], $age_row['12-14-avg'], $age_row['14-15-avg'], $age_row['15-18-avg'], $age_row['18-21-avg'], $age_row['21-25-avg'], $age_row['25-27-avg'], $age_row['27-30-avg'], $age_row['30-35-avg'], $age_row['35-40-avg'], $age_row['40-45-avg'], $age_row['45-50-avg'], $age_row['50-55-avg'], $age_row['55-60-avg'], $age_row['60-63-avg'], $age_row['63-65-avg'], $age_row['65-67-avg'], $age_row['67-70-avg'], $age_row['70-75-avg'], $age_row['75-80-avg'], $age_row['80-85-avg'], $age_row['85-90-avg'], $age_row['90-95-avg'], $age_row['95-110-avg']);
 
 function get_age_data($dataset, $lor) {
@@ -428,6 +431,57 @@ function get_lor_age_row($id) {
     return $lorow;
 }
 
+function get_all_percentage_values ($agegroup_id) {
+
+    // implementation partially copied from http://stackoverflow.com/questions/5299471/php-parsing-a-txt-file
+
+    $txt_file    = file_get_contents('data/EWR201406E_Matrix.csv');
+    $rows        = explode("\n", $txt_file);
+    array_shift($rows);
+
+    $line = 0;
+    $startLine = 1;
+    $numberOfLors = count($rows) - 1;
+    $results = array(count($numberOfLors));
+    foreach($rows as $row => $data) {
+        if ($data == 0) break;
+
+        // 1) --- getting row data seperated by semicolon, building up php-array from csv
+
+        // ZEIT;RAUMID;BEZ;PGR;BZR;PLR;STADTRAUM;E_E;E_EM;E_EW;E_E00_01;E_E01_02;E_E02_03;E_E03_05;E_E05_06;E_E06_07;
+        // E_E07_08;E_E08_10;E_E10_12;E_E12_14;E_E14_15;E_E15_18;E_E18_21;E_E21_25;E_E25_27;E_E27_30;E_E30_35;E_E35_40;
+        // E_E40_45;E_E45_50; E_E50_55;E_E55_60;E_E60_63;E_E63_65;E_E65_67;E_E67_70;E_E70_75;E_E75_80;E_E80_85;
+        // E_E85_90; E_E90_95;E_E95_110; E_U1;E_1U6;E_6U15;E_15U18;E_18U25;E_25U55;E_55U65;E_65U80;E_80U110
+
+        $row_data = explode(';', $data);
+        $info[$row]['timestamp'] = $row_data[0]; $info[$row]['lor_id'] = $row_data[1];
+        $info[$row]['plr'] = $row_data[5]; $info[$row]['e_g'] = $row_data[7]; $info[$row]['e_m'] = $row_data[8];
+        $info[$row]['e_w'] = $row_data[9]; $info[$row]['00_01'] = $row_data[10]; $info[$row]['01_02'] = $row_data[11];
+        $info[$row]['02_03'] = $row_data[12]; $info[$row]['03_05'] = $row_data[13];
+        $info[$row]['05_06'] = $row_data[14]; $info[$row]['06_07'] = $row_data[15];
+        $info[$row]['07_08'] = $row_data[16]; $info[$row]['08_10'] = $row_data[17];
+        $info[$row]['10_12'] = $row_data[18]; $info[$row]['12_14'] = $row_data[19];
+        $info[$row]['14_15'] = $row_data[20]; $info[$row]['15_18'] = $row_data[21];
+        $info[$row]['18_21'] = $row_data[22]; $info[$row]['21_25'] = $row_data[23];
+        $info[$row]['25_27'] = $row_data[24]; $info[$row]['27_30'] = $row_data[25];
+        $info[$row]['30_35'] = $row_data[26]; $info[$row]['35_40'] = $row_data[27];
+        $info[$row]['40_45'] = $row_data[28]; $info[$row]['45_50'] = $row_data[29];
+        $info[$row]['50_55'] = $row_data[30]; $info[$row]['55_60'] = $row_data[31];
+        $info[$row]['60_63'] = $row_data[32]; $info[$row]['63_65'] = $row_data[33];
+        $info[$row]['65_67'] = $row_data[34]; $info[$row]['67_70'] = $row_data[35];
+        $info[$row]['70_75'] = $row_data[36]; $info[$row]['75_80'] = $row_data[37];
+        $info[$row]['80_85'] = $row_data[38]; $info[$row]['85_90'] = $row_data[39];
+        $info[$row]['90_95'] = $row_data[40]; $info[$row]['95_110'] = $row_data[41];
+
+        // 2) --- calculate and store agegroup valuefor current row
+        // just for the current lor-data-row
+        $percentageBase = $info[$row]['e_g'];
+        $info[$row][$agegroup_id] = round($info[$row][$agegroup_id] / $percentageBase * 100, 1);
+        $results[$info[$row]['lor_id']] = $info[$row][$agegroup_id];
+    }
+    return $results;
+}
+
 function get_lor_names($id) {
 
     // implementation partially copied from http://stackoverflow.com/questions/5299471/php-parsing-a-txt-file
@@ -447,7 +501,32 @@ function get_lor_names($id) {
     }
 }
 
-$age_data = json_encode(get_age_data($age_row, $lor_names));
-print $age_data
+if ($lor != -1) {
+
+    $string_data = get_age_data($age_row, $lor_names);
+    print $string_data;
+
+} else {
+
+    $areas = get_all_percentage_values($agegroup_id);
+    $len = count($areas);
+    $nr = 1;
+    $do = '[';
+    foreach($areas as $area => $data) {
+        $do .= '{';
+            $do .= '"lor_id": "'.$area.'", ';
+            $do .= '"value": '.$data;
+        $nr++;
+        if ($nr === $len) {
+            $do .= '}';
+            break;
+        } else {
+            $do .= '}, ';
+        }
+    }
+    $do .= ']';
+    print $do;
+}
+
 
 ?>

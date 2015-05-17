@@ -14,7 +14,7 @@ function setupMapNavigation(date_string, lor_id) {
         bounds.extend(new OpenLayers.LonLat(13.7423,52.642415))
         bounds.toBBOX()
 
-    var mapbox_tiles = new OpenLayers.Layer.XYZ(
+    var mapbox_tiles = new OpenLayers.Layer.XYZ (
         "Mapbox LOR-Pages",
         [ "https://api.tiles.mapbox.com/v4/kiezatlas.m7222ia5/${z}/${x}/${y}.png?access_token=pk.eyJ1Ijoia2llemF0bGFzIiwiYSI6InFmRTdOWlUifQ.VjM4-2Ow6uuWR_7b49Y9Eg" ],
         {
@@ -24,7 +24,7 @@ function setupMapNavigation(date_string, lor_id) {
             sphericalMercator: true,
             wrapDateLine: true
         }
-    );
+    )
 
     var map = new OpenLayers.Map("berlin-citymap", {
         controls: [
@@ -39,11 +39,54 @@ function setupMapNavigation(date_string, lor_id) {
         projection: new OpenLayers.Projection("EPSG:900913"), 
         displayProjection: new OpenLayers.Projection("EPSG:4326"),
         zoom: 12
-    });
+    })
 
     var dStyle = new OpenLayers.Style( {
-        strokeColor: "#4170D4", strokeWidth: 1, fillColor: "#efefef", fillOpacity: .5, //, cursor: "pointer"
-    });
+        strokeColor: "#4170D4", strokeWidth: 1, fillColor: "#efefef", fillOpacity: 0.1, //, cursor: "pointer"
+    })
+
+    var ruleLow = new OpenLayers.Rule({
+            filter: new OpenLayers.Filter.Comparison({
+                    type: OpenLayers.Filter.Comparison.GREATER_THAN,
+                    property: "percentage_value",
+                    value: 0.1,
+                }),
+            symbolizer: {fillOpacity: 0.25}
+        })
+    var ruleMiddle = new OpenLayers.Rule({
+            filter: new OpenLayers.Filter.Comparison({
+                    type: OpenLayers.Filter.Comparison.GREATER_THAN,
+                    property: "percentage_value",
+                    value: 0.5,
+                }),
+            symbolizer: {fillOpacity: 0.5}
+        })
+    var ruleHigh = new OpenLayers.Rule({
+            filter: new OpenLayers.Filter.Comparison({
+                    type: OpenLayers.Filter.Comparison.GREATER_THAN,
+                    property: "percentage_value",
+                    value: 1,
+                }),
+            symbolizer: {fillOpacity: 0.75}
+        })
+    var ruleTop = new OpenLayers.Rule({
+            filter: new OpenLayers.Filter.Comparison({
+                    type: OpenLayers.Filter.Comparison.GREATER_THAN,
+                    property: "percentage_value",
+                    value: 1.5,
+                }),
+            symbolizer: {fillOpacity: 0.9}
+        })
+    var ruleOver = new OpenLayers.Rule({
+            filter: new OpenLayers.Filter.Comparison({
+                    type: OpenLayers.Filter.Comparison.GREATER_THAN,
+                    property: "percentage_value",
+                    value: 2,
+                }),
+            symbolizer: {fillOpacity: 1}
+        })
+
+    dStyle.addRules([ruleLow, ruleMiddle, ruleHigh, ruleTop, ruleOver])
 
     var defaultStyle = OpenLayers.Util.applyDefaults( dStyle, OpenLayers.Feature.Vector.style["default"]);
     var dStyleMap = new OpenLayers.StyleMap({
@@ -51,9 +94,8 @@ function setupMapNavigation(date_string, lor_id) {
         "select": { strokeWidth: 3, fill: 0,
             label : "${name}", fontSize: "12px", fontStyle: "bold",
             fontFamily: "Arial,Helvetica,sans-serif", fontColor: "#B60033"}
-    });
+    })
     
-
     // projection: new OpenLayers.Projection("EPSG:900913") breaks the setup
     var lor = new OpenLayers.Layer.Vector("KML Layer", {
         styleMap: dStyleMap, projection: map.displayProjection,
@@ -79,8 +121,35 @@ function setupMapNavigation(date_string, lor_id) {
         "featureselected": onFeatureSelect,
         "featureunselected": onFeatureUnselect,
         "loadend": function(e) {
-            // selectLorMarker(lor_id, lor, select, map)
-            console.log("load end.. ")
+
+            var year_string = "2014/06";
+            var url = "/~malte/"+year_string+"/calculation.php?agegroup_id=50_55"
+            var lor_values;
+
+            $.get(url, function (data) {
+
+                lor_values = JSON.parse(data)
+                console.log("LOR-values LOADED")
+
+                for (var featureIdx in lor.features) {
+                    var area = lor.features[featureIdx]
+                    var percentage_value = getAgeValue(area.fid)
+                    console.log("Area value set: " + area.fid, percentage_value)
+                    area.attributes.percentage_value = percentage_value;
+                }
+
+                function getAgeValue(fid) {
+                    for (var idx in lor_values) {
+                        var numericId = parseInt(lor_values[idx].lor_id)
+                        if (numericId == fid) return lor_values[idx].value
+                    }
+
+                }
+
+                lor.redraw()
+
+            })
+
         }
     })
 
