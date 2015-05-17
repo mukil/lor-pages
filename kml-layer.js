@@ -37,21 +37,28 @@ function setupMapNavigation(date_string, lor_id) {
             new OpenLayers.Control.KeyboardDefaults()
         ], layers: [ mapbox_tiles ],
         projection: new OpenLayers.Projection("EPSG:900913"), 
-        displayProjection: new OpenLayers.Projection("EPSG:4326"),
-        zoom: 12
+        displayProjection: new OpenLayers.Projection("EPSG:4326")
     })
 
     var dStyle = new OpenLayers.Style( {
-        strokeColor: "#4170D4", strokeWidth: 1, fillColor: "#efefef", fillOpacity: 0.1, //, cursor: "pointer"
+        strokeColor: "#4170D4", strokeWidth: 1, fillColor: "#efefef", fillOpacity: 1, //, cursor: "pointer"
     })
 
+    var ruleBase = new OpenLayers.Rule({
+            filter: new OpenLayers.Filter.Comparison({
+                    type: OpenLayers.Filter.Comparison.GREATER_THAN_OR_EQUAL_TO,
+                    property: "percentage_value",
+                    value: 0,
+                }),
+            symbolizer: {fillColor: "#fff", fillOpacity: 0.7 }
+        })
     var ruleLow = new OpenLayers.Rule({
             filter: new OpenLayers.Filter.Comparison({
                     type: OpenLayers.Filter.Comparison.GREATER_THAN,
                     property: "percentage_value",
                     value: 0.1,
                 }),
-            symbolizer: {fillOpacity: 0.25}
+            symbolizer: {fillColor: "#E5F8FF", fillOpacity: 0.5 }
         })
     var ruleMiddle = new OpenLayers.Rule({
             filter: new OpenLayers.Filter.Comparison({
@@ -59,7 +66,7 @@ function setupMapNavigation(date_string, lor_id) {
                     property: "percentage_value",
                     value: 0.5,
                 }),
-            symbolizer: {fillOpacity: 0.5}
+            symbolizer: {fillColor: "#95DEFF", fillOpacity: 0.5 }
         })
     var ruleHigh = new OpenLayers.Rule({
             filter: new OpenLayers.Filter.Comparison({
@@ -67,7 +74,7 @@ function setupMapNavigation(date_string, lor_id) {
                     property: "percentage_value",
                     value: 1,
                 }),
-            symbolizer: {fillOpacity: 0.75}
+            symbolizer: { fillColor: "#6DC1E2", fillOpacity: 0.6 }
         })
     var ruleTop = new OpenLayers.Rule({
             filter: new OpenLayers.Filter.Comparison({
@@ -75,7 +82,7 @@ function setupMapNavigation(date_string, lor_id) {
                     property: "percentage_value",
                     value: 1.5,
                 }),
-            symbolizer: {fillOpacity: 0.9}
+            symbolizer: { fillColor: "#40B0E2", fillOpacity: 0.7 }
         })
     var ruleOver = new OpenLayers.Rule({
             filter: new OpenLayers.Filter.Comparison({
@@ -83,10 +90,18 @@ function setupMapNavigation(date_string, lor_id) {
                     property: "percentage_value",
                     value: 2,
                 }),
-            symbolizer: {fillOpacity: 1}
+            symbolizer: { fillColor: "#3DB7E2", fillOpacity: 0.9 }
+        })
+    var ruleOverTop = new OpenLayers.Rule({
+            filter: new OpenLayers.Filter.Comparison({
+                    type: OpenLayers.Filter.Comparison.GREATER_THAN,
+                    property: "percentage_value",
+                    value: 2.5,
+                }),
+            symbolizer: { fillColor: "#1DACE2", fillOpacity: 1 }
         })
 
-    dStyle.addRules([ruleLow, ruleMiddle, ruleHigh, ruleTop, ruleOver])
+    dStyle.addRules([ruleBase, ruleLow, ruleMiddle, ruleHigh, ruleTop, ruleOver])
 
     var defaultStyle = OpenLayers.Util.applyDefaults( dStyle, OpenLayers.Feature.Vector.style["default"]);
     var dStyleMap = new OpenLayers.StyleMap({
@@ -101,12 +116,12 @@ function setupMapNavigation(date_string, lor_id) {
         styleMap: dStyleMap, projection: map.displayProjection,
         strategies: [ new OpenLayers.Strategy.Fixed() ],
         protocol: new OpenLayers.Protocol.HTTP({
-            url: "2012/06/data/LOR-Planungsraeume.kml", 
+            url: "2012/06/data/LOR-Planungsraeume-rev2.kml",
             format: new OpenLayers.Format.KML({ 'extractAttributes': true })
         })
     })
 
-    map.zoomToExtent( bounds.transform(map.displayProjection, map.projection) )
+    map.zoomToExtent( bounds.transform(map.displayProjection, map.projection), 13 )
     // osm_tiles.addOptions({ maxExtent: bounds }, true)
 
     var hover = new OpenLayers.Control.SelectFeature(lor, { renderIntent: "temporary", hover: true, highlightOnly: true })
@@ -123,13 +138,12 @@ function setupMapNavigation(date_string, lor_id) {
         "loadend": function(e) {
 
             var year_string = "2014/06";
-            var url = "/~malte/"+year_string+"/calculation.php?agegroup_id=50_55"
+            var url = "/~malte/"+year_string+"/calculation.php?agegroup_id=12_14"
             var lor_values;
 
             $.get(url, function (data) {
 
                 lor_values = JSON.parse(data)
-                console.log("LOR-values LOADED")
 
                 for (var featureIdx in lor.features) {
                     var area = lor.features[featureIdx]

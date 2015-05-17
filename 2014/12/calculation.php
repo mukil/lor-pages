@@ -73,7 +73,7 @@ function get_age_data($dataset, $lor) {
     $ninetyfive = (int) $dataset['90_95'];
     $hundredten = (int) $dataset['95_110'];
 
-    $meta = '{ "lor_name": "'.$lor['lor_name'].'", "total_inhabitants": '.$inhabitants.', "district": "Berlin-'.$lor['district'].'", "as_of" : "Juni 2014" }';
+    $meta = '{ "lor_name": "'.$lor['lor_name'].'", "total_inhabitants": '.$inhabitants.', "district": "Berlin-'.$lor['district'].'", "as_of" : "Dezember 2014" }';
 
     $do = '[';
         $do .= '{';
@@ -276,7 +276,7 @@ function get_lor_age_row($id) {
 
     // implementation partially copied from http://stackoverflow.com/questions/5299471/php-parsing-a-txt-file
 
-    $txt_file    = file_get_contents('data/EWR201406E_Matrix.csv');
+    $txt_file    = file_get_contents('data/EWR201412E_Matrix.csv');
     $rows        = explode("\n", $txt_file);
     array_shift($rows);
     // return values
