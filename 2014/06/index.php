@@ -32,7 +32,7 @@ $age_row = get_lor_age_row($lor);
 
 // get inhabitants per age group
 $lor_ages = array($age_row['00_01-avg'], $age_row['01_02-avg'], $age_row['02_03-avg'], $age_row['03_05-avg'], $age_row['05_06-avg'], $age_row['06_07-avg'], $age_row['07_08-avg'], $age_row['08_10-avg'], $age_row['10_12-avg'], $age_row['12_14-avg'], $age_row['14_15-avg'], $age_row['15_18-avg'], $age_row['18_21-avg'], $age_row['21_25-avg'], $age_row['25_27-avg'], $age_row['27_30-avg'], $age_row['30_35-avg'], $age_row['35_40-avg'], $age_row['40_45-avg'], $age_row['45_50-avg'], $age_row['50_55-avg'], $age_row['55_60-avg'], $age_row['60_63-avg'], $age_row['63_65-avg'], $age_row['65_67-avg'], $age_row['67_70-avg'], $age_row['70_75-avg'], $age_row['75_80-avg'], $age_row['80_85-avg'], $age_row['85_90-avg'], $age_row['90_95-avg'], $age_row['95_110-avg']);
-
+// $lor_absolutes = array($age_row['00_01'], $age_row['01_02'], $age_row['02_03'], $age_row['03_05'], $age_row['05_06'], $age_row['06_07'], $age_row['07_08'], $age_row['08_10'], $age_row['10_12'], $age_row['12_14'], $age_row['14_15'], $age_row['15_18'], $age_row['18_21'], $age_row['21_25'], $age_row['25_27'], $age_row['27_30'], $age_row['30_35'], $age_row['35_40'], $age_row['40_45'], $age_row['45_50'], $age_row['50_55'], $age_row['55_60'], $age_row['60_63'], $age_row['63_65'], $age_row['65_67'], $age_row['67_70'], $age_row['70_75'], $age_row['75_80'], $age_row['80_85'], $age_row['85_90'], $age_row['90_95'], $age_row['95_110']);
 $berlin_ages = array($age_row['00-01-avg'], $age_row['01-02-avg'], $age_row['02-03-avg'], $age_row['03-05-avg'], $age_row['05-06-avg'], $age_row['06-07-avg'], $age_row['07-08-avg'], $age_row['08-10-avg'], $age_row['10-12-avg'], $age_row['12-14-avg'], $age_row['14-15-avg'], $age_row['15-18-avg'], $age_row['18-21-avg'], $age_row['21-25-avg'], $age_row['25-27-avg'], $age_row['27-30-avg'], $age_row['30-35-avg'], $age_row['35-40-avg'], $age_row['40-45-avg'], $age_row['45-50-avg'], $age_row['50-55-avg'], $age_row['55-60-avg'], $age_row['60-63-avg'], $age_row['63-65-avg'], $age_row['65-67-avg'], $age_row['67-70-avg'], $age_row['70-75-avg'], $age_row['75-80-avg'], $age_row['80-85-avg'], $age_row['85-90-avg'], $age_row['90-95-avg'], $age_row['95-110-avg']);
 
 print '<html><head><title>Die '.$lor_names['lor_name'].' LOR-Seite</title>'
@@ -263,7 +263,8 @@ function render_age_table($dataset, $lor_names, $id) {
 
     $tab1 = "";
     $tab1 .= '<h3>3. Tabelle: Altersverteilung "'.$lor_names['lor_name'].'", Berlin-'.$lor_names['district'].' (Datenstand: Juni 2014) '
-        .'<a name="altersverteilung">&nbsp;</a></h3>';
+        .'<a name="altersverteilung">&nbsp;</a></h3>'
+        .'<div class="footer">Um die Prozentwerte auch untereinander (also &uuml;ber die zum Teil variierende Anzahl der Jahrg&aumlnge in einer Altersgruppe) besser vergleichen zu k&ouml;nnen wurden diese gemittelt:</div>';
     $tab1 .= '<div id="aging-chart"></div><div id="aging-chart-labels">Die X-Achse zeigt die Altersgruppen, die Y-Achse %*'
         .'<div class="lor-bar"></div> in diesem Raum <div class="berlin-bar"></div> im Berliner Durschnitt</div>';
 

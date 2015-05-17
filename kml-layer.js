@@ -14,7 +14,17 @@ function setupMapNavigation(date_string, lor_id) {
         bounds.extend(new OpenLayers.LonLat(13.7423,52.642415))
         bounds.toBBOX()
 
-    var osm_tiles = new OpenLayers.Layer.OSM("OpenStreetMap (Mapnik)")
+    var mapbox_tiles = new OpenLayers.Layer.XYZ(
+        "Mapbox LOR-Pages",
+        [ "https://api.tiles.mapbox.com/v4/kiezatlas.m7222ia5/${z}/${x}/${y}.png?access_token=pk.eyJ1Ijoia2llemF0bGFzIiwiYSI6InFmRTdOWlUifQ.VjM4-2Ow6uuWR_7b49Y9Eg" ],
+        {
+            attribution: '&copy; <a href="https://www.mapbox.com/about/maps/"">MapBox</a> '
+                + '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> '
+                + '<a href="https://www.mapbox.com/map-feedback/">Improve this map</a>',
+            sphericalMercator: true,
+            wrapDateLine: true
+        }
+    );
 
     var map = new OpenLayers.Map("berlin-citymap", {
         controls: [
@@ -22,10 +32,10 @@ function setupMapNavigation(date_string, lor_id) {
             new OpenLayers.Control.PanZoomBar(),
             new OpenLayers.Control.LayerSwitcher({'ascending':false}),
             new OpenLayers.Control.ScaleLine(),
-            new OpenLayers.Control.MousePosition(),
+            new OpenLayers.Control.Attribution(),
             new OpenLayers.Control.OverviewMap(),
             new OpenLayers.Control.KeyboardDefaults()
-        ], layers: [ osm_tiles ],
+        ], layers: [ mapbox_tiles ],
         projection: new OpenLayers.Projection("EPSG:900913"), 
         displayProjection: new OpenLayers.Projection("EPSG:4326"),
         zoom: 12
@@ -121,4 +131,3 @@ function selectLorMarker(lor_id, lor, select, map) {
         }
     }
 }
-

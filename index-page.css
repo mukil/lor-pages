@@ -27,38 +27,18 @@ body {
     margin-right: auto !important;
 }
 
-#aging-chart-labels {
-    font-size: 14px;
+.olMapViewport .olControlAttribution {
+    font-size: 8px;
+    bottom: 3px;
 }
 
-/** OpenLayers Specific Links */
-
-.lor-bar, .berlin-bar {
-    display: inline-block;
-    width: 30px;
-    height: 3px;
-    margin-left: 5px; margin-right: 5px;
-    padding: 0px;
-    padding-bottom: 5px;
+.olMapViewport .olControlAttribution a {
+    text-decoration: none;
+    color: #000;
 }
 
-.lor-bar {
-    background-color: #2f69bf;
-}
-
-.berlin-bar {
-    background-color: #a2bf2f;
-}
-
-h2, .footer {
-    margin-bottom: 40px;
-    line-height: 1.6em;
-}
-
-td.footer {
-    border :0px solid transparent;
-    font-size: 14px;
-    width: 100%;
+.olMapViewport .olControlAttribution a:hover {
+    text-decoration: underline;
 }
 
 #link_contentDiv a,
