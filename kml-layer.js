@@ -6,7 +6,9 @@ function showMapElements() {
     
 }
 
-function setupMapNavigation(date_string, lor_id) {
+function setup_chloropeth_map(date_string, age_group) {
+
+    console.log("setting up setup_chloropeth_map", date_string, age_group)
 
     // set initial map view to berlin city
     var bounds = new OpenLayers.Bounds()
@@ -29,79 +31,103 @@ function setupMapNavigation(date_string, lor_id) {
     var map = new OpenLayers.Map("berlin-citymap", {
         controls: [
             new OpenLayers.Control.Navigation(),
-            new OpenLayers.Control.PanZoomBar(),
-            new OpenLayers.Control.LayerSwitcher({'ascending':false}),
+            // new OpenLayers.Control.PanZoomBar(),
+            // new OpenLayers.Control.LayerSwitcher({'ascending':false}),
             new OpenLayers.Control.ScaleLine(),
             new OpenLayers.Control.Attribution(),
-            new OpenLayers.Control.OverviewMap(),
+            // new OpenLayers.Control.OverviewMap(),
             new OpenLayers.Control.KeyboardDefaults()
         ], layers: [ mapbox_tiles ],
+        restrictExtent: bounds,
         projection: new OpenLayers.Projection("EPSG:900913"), 
         displayProjection: new OpenLayers.Projection("EPSG:4326")
     })
 
-    var dStyle = new OpenLayers.Style( {
+    map.getNumZoomLevels = function() { return 15 }
+    map.isValidZoomLevel = function(zoomLevel) {
+        return ( (zoomLevel != null) &&
+        (zoomLevel >= 10) && // set min level here, could read from property
+        (zoomLevel < this.getNumZoomLevels()) );
+    }
+
+    /* var dStyle = new OpenLayers.Style( {
         strokeColor: "#4170D4", strokeWidth: 1, fillColor: "#efefef", fillOpacity: 1, //, cursor: "pointer"
+    }) **/
+
+    var dStyle = new OpenLayers.Style( {
+        strokeColor: "#666", strokeWidth: 1, fillColor: "#000", fillOpacity: 1, //, cursor: "pointer"
     })
 
     var ruleBase = new OpenLayers.Rule({
             filter: new OpenLayers.Filter.Comparison({
                     type: OpenLayers.Filter.Comparison.GREATER_THAN_OR_EQUAL_TO,
-                    property: "percentage_value",
+                    property: "averaged_value",
                     value: 0,
                 }),
-            symbolizer: {fillColor: "#fff", fillOpacity: 0.7 }
+            symbolizer: { fillColor: "#fff", fillOpacity: 0.7 }
         })
+    // #f1eef6
     var ruleLow = new OpenLayers.Rule({
             filter: new OpenLayers.Filter.Comparison({
                     type: OpenLayers.Filter.Comparison.GREATER_THAN,
-                    property: "percentage_value",
-                    value: 0.1,
+                    property: "averaged_value",
+                    value: 0.4,
                 }),
-            symbolizer: {fillColor: "#E5F8FF", fillOpacity: 0.5 }
+            symbolizer: { fillColor: "#f1eef6", fillOpacity: 0.7 }
         })
+    // #bdc9e1
     var ruleMiddle = new OpenLayers.Rule({
             filter: new OpenLayers.Filter.Comparison({
                     type: OpenLayers.Filter.Comparison.GREATER_THAN,
-                    property: "percentage_value",
-                    value: 0.5,
+                    property: "averaged_value",
+                    value: 1,
                 }),
-            symbolizer: {fillColor: "#95DEFF", fillOpacity: 0.5 }
+            symbolizer: { fillColor: "#bdc9e1", fillOpacity: 0.7 }
         })
+    // #74a9cf
     var ruleHigh = new OpenLayers.Rule({
             filter: new OpenLayers.Filter.Comparison({
                     type: OpenLayers.Filter.Comparison.GREATER_THAN,
-                    property: "percentage_value",
-                    value: 1,
+                    property: "averaged_value",
+                    value: 1.5,
                 }),
-            symbolizer: { fillColor: "#6DC1E2", fillOpacity: 0.6 }
+            symbolizer: { fillColor: "#74a9cf", fillOpacity: 0.7 }
         })
+    // #2b8cbe
     var ruleTop = new OpenLayers.Rule({
             filter: new OpenLayers.Filter.Comparison({
                     type: OpenLayers.Filter.Comparison.GREATER_THAN,
-                    property: "percentage_value",
-                    value: 1.5,
+                    property: "averaged_value",
+                    value: 2,
                 }),
-            symbolizer: { fillColor: "#40B0E2", fillOpacity: 0.7 }
+            symbolizer: { fillColor: "#2b8cbe", fillOpacity: 0.7 }
         })
+    // #045a8d
     var ruleOver = new OpenLayers.Rule({
             filter: new OpenLayers.Filter.Comparison({
                     type: OpenLayers.Filter.Comparison.GREATER_THAN,
-                    property: "percentage_value",
-                    value: 2,
+                    property: "averaged_value",
+                    value: 3,
                 }),
-            symbolizer: { fillColor: "#3DB7E2", fillOpacity: 0.9 }
+            symbolizer: { fillColor: "#045a8d", fillOpacity: 0.7 }
         })
     var ruleOverTop = new OpenLayers.Rule({
             filter: new OpenLayers.Filter.Comparison({
                     type: OpenLayers.Filter.Comparison.GREATER_THAN,
-                    property: "percentage_value",
-                    value: 2.5,
+                    property: "averaged_value",
+                    value: 4,
                 }),
-            symbolizer: { fillColor: "#1DACE2", fillOpacity: 1 }
+            symbolizer: { fillColor: "#045a8d", fillOpacity: 0.9 }
         })
-
-    dStyle.addRules([ruleBase, ruleLow, ruleMiddle, ruleHigh, ruleTop, ruleOver])
+    var ruleMegaOver = new OpenLayers.Rule({
+            filter: new OpenLayers.Filter.Comparison({
+                    type: OpenLayers.Filter.Comparison.GREATER_THAN,
+                    property: "averaged_value",
+                    value: 5,
+                }),
+            symbolizer: { fillColor: "#343434", fillOpacity: 0.9 }
+        })
+    dStyle.addRules([ruleBase, ruleLow, ruleMiddle, ruleHigh, ruleTop, ruleOver, ruleOverTop, ruleMegaOver])
 
     var defaultStyle = OpenLayers.Util.applyDefaults( dStyle, OpenLayers.Feature.Vector.style["default"]);
     var dStyleMap = new OpenLayers.StyleMap({
@@ -121,8 +147,7 @@ function setupMapNavigation(date_string, lor_id) {
         })
     })
 
-    map.zoomToExtent( bounds.transform(map.displayProjection, map.projection), 13 )
-    // osm_tiles.addOptions({ maxExtent: bounds }, true)
+    map.zoomToExtent(bounds.transform(map.displayProjection, map.projection), 13 )
 
     var hover = new OpenLayers.Control.SelectFeature(lor, { renderIntent: "temporary", hover: true, highlightOnly: true })
     map.addControl(hover)
@@ -137,8 +162,7 @@ function setupMapNavigation(date_string, lor_id) {
         "featureunselected": onFeatureUnselect,
         "loadend": function(e) {
 
-            var year_string = "2014/06";
-            var url = "/~malte/"+year_string+"/calculation.php?agegroup_id=12_14"
+            var url = "/~malte/"+year_string+"/calculation.php?agegroup_id=" + age_group
             var lor_values;
 
             $.get(url, function (data) {
@@ -147,17 +171,34 @@ function setupMapNavigation(date_string, lor_id) {
 
                 for (var featureIdx in lor.features) {
                     var area = lor.features[featureIdx]
-                    var percentage_value = getAgeValue(area.fid)
-                    console.log("Area value set: " + area.fid, percentage_value)
+                    var percentage_value = getPercentageValue(area.fid)
+                    var absolute_value = getAbsoluteValue(area.fid)
+                    var averaged_value = getAveragedValue(area.fid)
+                    // console.log("Area value set: " + area.fid, percentage_value)
                     area.attributes.percentage_value = percentage_value;
+                    area.attributes.absolute_value = absolute_value;
+                    area.attributes.averaged_value = averaged_value;
                 }
 
-                function getAgeValue(fid) {
+                function getAveragedValue(fid) {
                     for (var idx in lor_values) {
                         var numericId = parseInt(lor_values[idx].lor_id)
-                        if (numericId == fid) return lor_values[idx].value
+                        if (numericId == fid) return lor_values[idx].averaged
                     }
+                }
 
+                function getPercentageValue(fid) {
+                    for (var idx in lor_values) {
+                        var numericId = parseInt(lor_values[idx].lor_id)
+                        if (numericId == fid) return lor_values[idx].percentage
+                    }
+                }
+
+                function getAbsoluteValue(fid) {
+                    for (var idx in lor_values) {
+                        var numericId = parseInt(lor_values[idx].lor_id)
+                        if (numericId == fid) return lor_values[idx].total
+                    }
                 }
 
                 lor.redraw()
@@ -173,22 +214,20 @@ function setupMapNavigation(date_string, lor_id) {
     function onFeatureSelect(event) {
         var feature = event.feature
         var selectedFeature = feature
-        console.log('loading ... ' + feature.fid)
-        if (lor_id == "0" + feature['fid']) {
-            // selected feature is current page, dont' render any outgoing link
-        } else {
-            var lorId = (parseInt(feature.fid) > 9052001) ? parseInt(feature.fid) : "0" + feature.fid
-            var popup = new OpenLayers.Popup.Anchored("link", 
-                feature.geometry.getBounds().getCenterLonLat(),
-                new OpenLayers.Size(50,50),
-                '<a href="/~bob/lor-pages/'+date_string+'/?lor=' + lorId+ '">' +feature.data['name']+ '</a>',
-                null, false, function(e) { popup.destroy() }
-            );
-            popup.autoSize = true
-            popup.panMapIfOutOfView = true;
-            feature.popup = popup
-            map.addPopup(popup);
-        }
+        // console.log('loading ... ', feature)
+        var lorId = (parseInt(feature.fid) > 9052001) ? parseInt(feature.fid) : "0" + feature.fid
+        var popup = new OpenLayers.Popup.Anchored("link", 
+            feature.geometry.getBounds().getCenterLonLat(),
+            new OpenLayers.Size(270, 72),
+            '<em>Anzahl der gemeldeten Personen: </em><b>'+feature.attributes['absolute_value']+'</b><br/>'
+            + '<em>Prozentsatz: </em><b>'+feature.attributes['percentage_value']+'%</b> '
+            + '<em>LOR-Average: </em><b>'+feature.attributes['averaged_value']+'%</b><br/>'
+            + '<a href="/~bob/lor-pages/'+date_string+'/?lor=' + lorId+ '">zur LOR-Seite \"' +feature.data['name']+ '\"</a><br/>',
+            null, true, function(e) { popup.destroy() }
+        );
+        popup.panMapIfOutOfView = true;
+        feature.popup = popup
+        map.addPopup(popup);
     }
 
     function onFeatureUnselect(event) {

@@ -42,6 +42,11 @@ body {
 }
 
 #link_contentDiv a,
+#link_contentDiv a:link {
+    display: block;
+}
+
+#link_contentDiv a,
 #link_contentDiv a:link,
 .footer a,
 .footer a:link {
@@ -52,6 +57,21 @@ body {
 #link_contentDiv {
     padding-top: 10px;
     font-size: 14px;
+    background-color: #fff;
+}
+
+.dev-version {
+    position: fixed;
+    left: 10px;
+    top: 10px;
+    background-color: #343434;
+    color: #fff;
+    padding: 10px;
+    min-width: 180px;
+}
+
+.dev-version a {
+    color: #fff;
 }
 
 #link {
@@ -133,4 +153,18 @@ table thead td {
     border-top: 0px solid transparent;
     border-left: 0px solid transparent;
     border-right: 0px solid transparent;
+}
+
+
+select {
+    padding: 4px;
+}
+
+select option {
+    padding: 3px;
+}
+
+form button {
+    padding: 4px;
+    cursor: pointer;
 }

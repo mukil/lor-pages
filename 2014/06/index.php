@@ -76,7 +76,7 @@ print '<html><head><title>Die '.$lor_names['lor_name'].' LOR-Seite</title>'
             .'}'
         .'</script>'
 
-        .'<script src="/~malte/lor-page-diagram.js"></script>'
+        .'<script src="lor-page-diagram.js"></script>'
 
       .'</head><body>';
 

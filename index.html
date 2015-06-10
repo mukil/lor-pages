@@ -1,7 +1,7 @@
 
 
 <html>
-<head><title>Die LOR-Seiten</title>
+<head><title>Einstieg in die LOR-Seiten</title>
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-15">
     <link rel="stylesheet" type="text/css" href="index-page.css"></link>
     <script src="2012/06/libs/raphael-min.js"></script>
@@ -9,38 +9,100 @@
     <script src="2012/06/libs/g.line-min.js"></script>
     <script src="2012/06/libs/OpenLayers.js"></script>
     <script src="2014/06/libs/jquery-1.11.3.min.js"></script>
+    <script src="kml-layer.js"></script>
+    <script>
+        var year_string = "2014/06";
+        var age_selector = "50_55";
+        var has_params_index = document.location.href.indexOf('?')
+        if (has_params_index != -1) {
+            var age_param_group = document.location.href.substr(has_params_index+1, 5)
+            age_selector = age_param_group
+        }
+
+        function load_other_dataset () {
+            var selection = $('#age-selector')
+            age_selector = selection[0].selectedOptions[0].value
+            window.document.location.href = "?"+ age_selector
+        }
+
+        function setup_dataset () {
+            setup_chloropeth_map(year_string, age_selector)
+            $('#age-selector').val(age_selector)
+            $('.agegroup-name').text($('#age-selector')[0].selectedOptions[0].innerHTML)
+        }
+
+    </script>
     <script>
         window.onload = function () {
-
-            var year_string = "2014/06";
-
-            setupMapNavigation(year_string);
-
+            setup_dataset()
         }
     </script>
-    <script src="kml-layer.js"></script>
   </head>
 
 <body>
+
+    <div class="dev-version">
+        <b>Entwicklungsversion:</b> Stand, 10. Juni 2015<br/>
+        <a href="http://github.com/mukil/lor-pages">Open Source Code</a> (PHP/HTML/JS)
+    </div>
 
     <!--p>
         <a href="#" class="active">Anteil verschiedener Altersgruppen auf der Karte</a>
         <a href="#">Navigationshilfe zu den Details eines Raums</a>
     </p-->
-    <p>&nbsp;</p>
+    <p>
+        <form>
+            <h3 name="age-selector">Andere Altersgruppe ausw&auml;hlen</h3>
+            <select id="age-selector" type="dropdown" onchange="load_other_dataset()">
+                <option id="00_01" value="00_01">0-1</option>
+                <option id="01_02" value="01_02">1-2</option>
+                <option id="02_03" value="02_03">2-3</option>
+                <option id="03_05" value="03_05">3-5</option>
+                <option id="05_06" value="05_06">5-6</option>
+                <option id="06_07" value="06_07">6-7</option>
+                <option id="07_08" value="07_08">7-8</option>
+                <option id="08_10" value="08_10">8-10</option>
+                <option id="10_12" value="10_12">10-12</option>
+                <option id="12_14" value="12_14">12-14</option>
+                <option id="14_15" value="14_15">14-15</option>
+                <option id="15_18" value="15_18">15-18</option>
+                <option id="18_21" value="18_21">18-21</option>
+                <option id="21_25" value="21_25">21-25</option>
+                <option id="25_27" value="25_27">25-27</option>
+                <option id="27_30" value="27_30">27-30</option>
+                <option id="30_35" value="30_35">30-35</option>
+                <option id="35_40" value="35_40">35-40</option>
+                <option id="40_45" value="40_45">40-45</option>
+                <option id="45_50" value="45_50">45-50</option>
+                <option id="50_55" value="50_55">50-55</option>
+                <option id="55_60" value="55_60">55-60</option>
+                <option id="60_63" value="60_63">60-63</option>
+                <option id="63_65" value="63_65">63-65</option>
+                <option id="65_67" value="65_67">65-67</option>
+                <option id="67_70" value="67_70">67-70</option>
+                <option id="70_75" value="70_75">70-75</option>
+                <option id="75_80" value="75_80">75_80</option>
+                <option id="80_85" value="80_85">80-85</option>
+                <option id="85_90" value="85_90">85-90</option>
+                <option id="90_95" value="90_95">90-95</option>
+                <option id="95_110" value="95_110">95-110</option>
+            </select>
+            <!--button type="submit">ausw&auml;hlen</button-->
+        </form>
+    </p>
 
-    <h3 id="nav-header">Anteil der 12-14j&auml;hrigen in den 447 &laquo;lebensweltlich orientierten Planungsr&auml;umen&raquo; Berlins, Juni 2014</h3>
+    <h3 id="nav-header">Relativer Anteil der <span class="agegroup-name">...</span>j&auml;hrigen mit gemeldetem Wohnsitz in den 447 LORs <br/>(&raquo;lebensweltlich orientierte Planungsr&auml;ume&laquo;) Berlin, Juni 2014</h3>
 
     <div id="berlin-citymap"></div>
 
     <div id="data-link"></div>
 
     <p class="footer" style="padding-left: 60px;"><br/>
-        &copy; 2013 - 2015 f&uuml;r diese Auswertung <a href="http://www.spinnenwerk.de/network/" title="Website: Projekt Network" alt="Projekt Network, GskA">Projekt Network</a>, <a href="http://www.gska-berlin.de/index.html" title="Website: GskA Berlin" alt="Website: GskA Berlin">GskA Berlin</a>, Malte Rei&szlig;ig<br/>
+        &copy; 2013 - 2015 f&uuml;r diese Auswertung <a href="http://www.spinnenwerk.de/network/" title="Website: Projekt Network" alt="Projekt Network, GskA">Projekt Network</a>, <a href="http://www.gska-berlin.de/index.html" title="Website: GskA Berlin" alt="Website: GskA Berlin">GskA Berlin</a>, <a href="http://infokitchen.net" title="Blog">Malte Rei&szlig;ig</a><br/>
     </p>
 
     <div class="footer">
-        Realisation: <a href="http://www.mikromedia.de" title="Website: mikromedia.de" alt="Website: mikromedia.de">B&uuml;ro f&uuml;r Informationsarbeit</a> in Zusammenarbeit mit dem <a href="http://www.statistik-berlin-brandenburg.de/">Amt f&uuml;r Statistik Berlin-Brandenburg</a> und der <a href="http://www.gska-berlin.de/index.html" title="Website: GskA Berlin" alt="Website: GskA Berlin">GskA Berlin</a>. Erweiterte LOR-Geometrie basierend auf dem Stand <a href="http://www.statistik-berlin-brandenburg.de/produkte/opendata/geometrienOD.asp?Kat=6301">07/2012</a> lizenziert als <em>CC-BY</em> vom Amt f&uuml;r Statistik Berlin-Brandenburg
+        Realisation: <a href="http://www.mikromedia.de" title="Website: mikromedia.de" alt="Website: mikromedia.de">B&uuml;ro f&uuml;r Informationsarbeit</a> in Zusammenarbeit mit dem <a href="http://www.statistik-berlin-brandenburg.de/">Amt f&uuml;r Statistik Berlin-Brandenburg</a> und der <a href="http://www.gska-berlin.de/index.html" title="Website: GskA Berlin" alt="Website: GskA Berlin">GskA Berlin</a>. Die hier zum Einsatz kommende und erweiterte LOR-Geometrie (KML-Datei) basiert auf dem Stand <a href="http://www.statistik-berlin-brandenburg.de/produkte/opendata/geometrienOD.asp?Kat=6301">07/2012</a> ver&ouml;ffentlicht vom Amt f&uuml;r Statistik Berlin-Brandenburg und lizensiert als <em>CC-BY 1.0 DE</em>.
     </div>
 
     </body>
