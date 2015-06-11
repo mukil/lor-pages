@@ -43,7 +43,7 @@ function setup_chloropeth_map(date_string, age_group) {
         displayProjection: new OpenLayers.Projection("EPSG:4326")
     })
 
-    map.getNumZoomLevels = function() { return 15 }
+    map.getNumZoomLevels = function() { return 16 }
     map.isValidZoomLevel = function(zoomLevel) {
         return ( (zoomLevel != null) &&
         (zoomLevel >= 10) && // set min level here, could read from property
@@ -89,7 +89,7 @@ function setup_chloropeth_map(date_string, age_group) {
             filter: new OpenLayers.Filter.Comparison({
                     type: OpenLayers.Filter.Comparison.GREATER_THAN,
                     property: "averaged_value",
-                    value: 1.5,
+                    value: 1.4,
                 }),
             symbolizer: { fillColor: "#74a9cf", fillOpacity: 0.7 }
         })
@@ -98,7 +98,7 @@ function setup_chloropeth_map(date_string, age_group) {
             filter: new OpenLayers.Filter.Comparison({
                     type: OpenLayers.Filter.Comparison.GREATER_THAN,
                     property: "averaged_value",
-                    value: 2,
+                    value: 1.9,
                 }),
             symbolizer: { fillColor: "#2b8cbe", fillOpacity: 0.7 }
         })
@@ -107,7 +107,7 @@ function setup_chloropeth_map(date_string, age_group) {
             filter: new OpenLayers.Filter.Comparison({
                     type: OpenLayers.Filter.Comparison.GREATER_THAN,
                     property: "averaged_value",
-                    value: 3,
+                    value: 2.8,
                 }),
             symbolizer: { fillColor: "#045a8d", fillOpacity: 0.7 }
         })
@@ -115,7 +115,7 @@ function setup_chloropeth_map(date_string, age_group) {
             filter: new OpenLayers.Filter.Comparison({
                     type: OpenLayers.Filter.Comparison.GREATER_THAN,
                     property: "averaged_value",
-                    value: 4,
+                    value: 3.7,
                 }),
             symbolizer: { fillColor: "#045a8d", fillOpacity: 0.9 }
         })
@@ -123,7 +123,7 @@ function setup_chloropeth_map(date_string, age_group) {
             filter: new OpenLayers.Filter.Comparison({
                     type: OpenLayers.Filter.Comparison.GREATER_THAN,
                     property: "averaged_value",
-                    value: 5,
+                    value: 4.7,
                 }),
             symbolizer: { fillColor: "#343434", fillOpacity: 0.9 }
         })
@@ -162,7 +162,7 @@ function setup_chloropeth_map(date_string, age_group) {
         "featureunselected": onFeatureUnselect,
         "loadend": function(e) {
 
-            var url = "/~malte/"+year_string+"/calculation.php?agegroup_id=" + age_group
+            var url = "/berlin/"+year_string+"/calculation.php?agegroup_id=" + age_group
             var lor_values;
 
             $.get(url, function (data) {
@@ -174,10 +174,12 @@ function setup_chloropeth_map(date_string, age_group) {
                     var percentage_value = getPercentageValue(area.fid)
                     var absolute_value = getAbsoluteValue(area.fid)
                     var averaged_value = getAveragedValue(area.fid)
+                    var inhabitants_value = getInhabitantsValue(area.fid)
                     // console.log("Area value set: " + area.fid, percentage_value)
                     area.attributes.percentage_value = percentage_value;
                     area.attributes.absolute_value = absolute_value;
                     area.attributes.averaged_value = averaged_value;
+                    area.attributes.inhabitants_value = inhabitants_value;
                 }
 
                 function getAveragedValue(fid) {
@@ -201,6 +203,13 @@ function setup_chloropeth_map(date_string, age_group) {
                     }
                 }
 
+                function getInhabitantsValue(fid) {
+                    for (var idx in lor_values) {
+                        var numericId = parseInt(lor_values[idx].lor_id)
+                        if (numericId == fid) return lor_values[idx].inhabitants
+                    }
+                }
+
                 lor.redraw()
 
             })
@@ -219,10 +228,10 @@ function setup_chloropeth_map(date_string, age_group) {
         var popup = new OpenLayers.Popup.Anchored("link", 
             feature.geometry.getBounds().getCenterLonLat(),
             new OpenLayers.Size(270, 72),
-            '<em>Anzahl der gemeldeten Personen: </em><b>'+feature.attributes['absolute_value']+'</b><br/>'
-            + '<em>Prozentsatz: </em><b>'+feature.attributes['percentage_value']+'%</b> '
-            + '<em>LOR-Average: </em><b>'+feature.attributes['averaged_value']+'%</b><br/>'
-            + '<a href="/~bob/lor-pages/'+date_string+'/?lor=' + lorId+ '">zur LOR-Seite \"' +feature.data['name']+ '\"</a><br/>',
+            '<b>'+feature.attributes['absolute_value']+'</b> von <b>'+feature.attributes['inhabitants_value']+'</b> gemeldeten Personen, sind'
+            + ' <b>'+feature.attributes['percentage_value']+'%</b> ('
+            + '<em>LOR-Average: </em><b>'+feature.attributes['averaged_value']+'%</b>)<br/>'
+            + '<a href="/berlin/'+date_string+'/?lor=' + lorId+ '">> zur LOR-Seite \"' +feature.data['name']+ '\"</a><br/>',
             null, true, function(e) { popup.destroy() }
         );
         popup.panMapIfOutOfView = true;

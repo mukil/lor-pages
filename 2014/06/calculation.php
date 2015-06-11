@@ -517,10 +517,11 @@ function get_all_percentage_values ($agegroup_id) {
         $info[$row][$agegroup_id .'-total'] = $info[$row][$agegroup_id];
         $info[$row][$agegroup_id] = round($info[$row][$agegroup_id] / $percentageBase * 100, 1);
 
-        $values = array(3);
+        $values = array(4);
         $values[0] = $info[$row][$agegroup_id];
         $values[1] = $info[$row][$agegroup_id . '-total'];
         $values[2] = $info[$row][$agegroup_id . '-avg'];
+        $values[3] = $percentageBase;
 
         $results[$info[$row]['lor_id']] = $values;
         // var_dump($results);
@@ -565,7 +566,8 @@ if ($lor != -1) {
             $do .= '"lor_id": "'.$area.'", ';
             $do .= '"percentage": "'.$data[0].'", ';
             $do .= '"total": "'.$data[1].'", ';
-            $do .= '"averaged": "'.$data[2].'"';
+            $do .= '"averaged": "'.$data[2].'", ';
+            $do .= '"inhabitants": "'.$data[3].'"';
         $nr++;
         if ($nr === $len) {
             $do .= '}';
