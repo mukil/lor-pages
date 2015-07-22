@@ -11,8 +11,8 @@
     <script src="2014/06/libs/jquery-1.11.3.min.js"></script>
     <script src="kml-layer.js"></script>
     <script>
-        var year_string = "2014/06";
-        var age_selector = "50_55";
+        var year_string = "2014/12";
+        var age_selector = "30_35";
         var has_params_index = document.location.href.indexOf('?')
         if (has_params_index != -1) {
             var age_param_group = document.location.href.substr(has_params_index+1, 5)
@@ -22,11 +22,15 @@
         function load_other_dataset () {
             var selection = $('#age-selector')
             age_selector = selection[0].selectedOptions[0].value
-            window.document.location.href = "?"+ age_selector
+            // window.document.location.href = "?"+ age_selector
+            render_lor_data_geometry(year_string, age_selector)
+            window.history.pushState( {}, 'Einstieg in die LOR-Seiten', '/~malte/?'+ age_selector)
+            $('#age-selector').val(age_selector)
+            $('.agegroup-name').text($('#age-selector')[0].selectedOptions[0].innerHTML)
         }
 
         function setup_dataset () {
-            setup_chloropeth_map(year_string, age_selector)
+            setup_base_map(year_string, age_selector)
             $('#age-selector').val(age_selector)
             $('.agegroup-name').text($('#age-selector')[0].selectedOptions[0].innerHTML)
         }
@@ -40,11 +44,6 @@
   </head>
 
 <body>
-
-    <div class="dev-version">
-        <b>Entwicklungsversion:</b> Stand, 10. Juni 2015<br/>
-        <a href="http://github.com/mukil/lor-pages">Open Source Code</a> (PHP/HTML/JS)
-    </div>
 
     <!--p>
         <a href="#" class="active">Anteil verschiedener Altersgruppen auf der Karte</a>
@@ -91,7 +90,7 @@
         </form>
     </p>
 
-    <h3 id="nav-header">Relativer Anteil der <span class="agegroup-name">...</span>j&auml;hrigen mit gemeldetem Wohnsitz in den 447 LORs <br/>(&raquo;lebensweltlich orientierte Planungsr&auml;ume&laquo;) Berlin, Juni 2014</h3>
+    <h3 id="nav-header">Relativer Anteil der <span class="agegroup-name">...</span>j&auml;hrigen mit gemeldetem Wohnsitz in den 447 LORs (&raquo;lebensweltlich orientierte Planungsr&auml;ume&laquo;) Berlin, Dezember 2014</h3>
 
     <div id="berlin-citymap"></div>
 

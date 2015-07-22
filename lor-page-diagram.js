@@ -20,7 +20,7 @@ function update_diagram (target, as_of, lor_id) {
     $('.diagram-layer-controls span').removeClass('selected')
     $(target).addClass('selected')
 
-    var url = "/~malte/"+year_string+"/calculation.php?lor=" + lor_id
+    var url = "/~lor/seiten/"+year_string+"/calculation.php?lor=" + lor_id
 
     $.get(url, function (data) {
         var result = JSON.parse(data)

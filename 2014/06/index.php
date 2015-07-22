@@ -38,11 +38,11 @@ $berlin_ages = array($age_row['00-01-avg'], $age_row['01-02-avg'], $age_row['02-
 print '<html><head><title>Die '.$lor_names['lor_name'].' LOR-Seite</title>'
         .'<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-15">'
         .'<link rel="stylesheet" type="text/css" href="pages.css"></link>'
-        .'<script src="libs/raphael-min.js"></script>'
-        .'<script src="libs/g.raphael-min.js"></script>'
-        .'<script src="libs/g.line-min.js"></script>'
-        .'<script src="libs/jquery-1.11.3.min.js"></script>'
-        .'<script src="libs/OpenLayers.js"></script>'
+        .'<script src="/~lor/seiten/libs/raphael-min.js"></script>'
+        .'<script src="/~lor/seiten/libs/g.raphael-min.js"></script>'
+        .'<script src="/~lor/seiten/libs/g.line-min.js"></script>'
+        .'<script src="/~lor/seiten/libs/jquery-1.11.3.min.js"></script>'
+        .'<script src="/~lor/seiten/libs/OpenLayers.js"></script>'
         .'<script src="kml-layer.js"></script>'
         .'<script>'
             .'var global_chart;'
@@ -76,7 +76,7 @@ print '<html><head><title>Die '.$lor_names['lor_name'].' LOR-Seite</title>'
             .'}'
         .'</script>'
 
-        .'<script src="lor-page-diagram.js"></script>'
+        .'<script src="/~lor/seiten/lor-page-diagram.js"></script>'
 
       .'</head><body>';
 

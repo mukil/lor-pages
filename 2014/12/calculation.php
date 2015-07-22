@@ -276,7 +276,7 @@ function get_lor_age_row($id) {
 
     // implementation partially copied from http://stackoverflow.com/questions/5299471/php-parsing-a-txt-file
 
-    $txt_file    = file_get_contents('data/EWR201412E_Matrix.csv');
+    $txt_file    = file_get_contents('data/EWR201406E_Matrix.csv');
     $rows        = explode("\n", $txt_file);
     array_shift($rows);
     // return values
@@ -435,7 +435,7 @@ function get_all_percentage_values ($agegroup_id) {
 
     // implementation partially copied from http://stackoverflow.com/questions/5299471/php-parsing-a-txt-file
 
-    $txt_file    = file_get_contents('data/EWR201406E_Matrix.csv');
+    $txt_file    = file_get_contents('data/EWR201412E_Matrix.csv');
     $rows        = explode("\n", $txt_file);
     array_shift($rows);
 
@@ -473,12 +473,60 @@ function get_all_percentage_values ($agegroup_id) {
         $info[$row]['80_85'] = $row_data[38]; $info[$row]['85_90'] = $row_data[39];
         $info[$row]['90_95'] = $row_data[40]; $info[$row]['95_110'] = $row_data[41];
 
-        // 2) --- calculate and store agegroup valuefor current row
         // just for the current lor-data-row
         $percentageBase = $info[$row]['e_g'];
+        $info[$row]['e_w-avg'] = round($info[$row]['e_w'] / $percentageBase * 100, 1);
+        $info[$row]['e_m-avg'] = round($info[$row]['e_m'] / $percentageBase * 100, 1);
+        // print ' male: '.$info[$row]['e_m-avg'].' female: '.$info[$row]['e_w-avg'];
+        $info[$row]['00_01-avg'] = round($info[$row]['00_01'] / $percentageBase * 100, 1);
+        $info[$row]['01_02-avg'] = round($info[$row]['01_02'] / $percentageBase * 100, 1);
+        $info[$row]['02_03-avg'] = round($info[$row]['02_03'] / $percentageBase * 100, 1);
+        $info[$row]['03_05-avg'] = round($info[$row]['03_05'] / $percentageBase * 100 / 2, 1);
+        $info[$row]['05_06-avg'] = round($info[$row]['05_06'] / $percentageBase * 100, 1);
+        $info[$row]['06_07-avg'] = round($info[$row]['06_07'] / $percentageBase * 100, 1);
+        $info[$row]['07_08-avg'] = round($info[$row]['07_08'] / $percentageBase * 100, 1);
+        $info[$row]['08_10-avg'] = round($info[$row]['08_10'] / $percentageBase * 100 / 2, 1);
+        $info[$row]['10_12-avg'] = round($info[$row]['10_12'] / $percentageBase * 100 / 2, 1);
+        $info[$row]['12_14-avg'] = round($info[$row]['12_14'] / $percentageBase * 100 / 2, 1);
+        $info[$row]['14_15-avg'] = round($info[$row]['14_15'] / $percentageBase * 100, 1);
+        $info[$row]['15_18-avg'] = round($info[$row]['15_18'] / $percentageBase * 100 / 3, 1);
+        $info[$row]['18_21-avg'] = round($info[$row]['18_21'] / $percentageBase * 100 / 3, 1);
+        $info[$row]['21_25-avg'] = round($info[$row]['21_25'] / $percentageBase * 100 / 4, 1);
+        $info[$row]['25_27-avg'] = round($info[$row]['25_27'] / $percentageBase * 100 / 3, 1);
+        $info[$row]['27_30-avg'] = round($info[$row]['27_30'] / $percentageBase * 100 / 3, 1);
+        $info[$row]['30_35-avg'] = round($info[$row]['30_35'] / $percentageBase * 100 / 5, 1);
+        $info[$row]['35_40-avg'] = round($info[$row]['35_40'] / $percentageBase * 100 / 5, 1);
+        $info[$row]['40_45-avg'] = round($info[$row]['40_45'] / $percentageBase * 100 / 5, 1);
+        $info[$row]['45_50-avg'] = round($info[$row]['45_50'] / $percentageBase * 100 / 5, 1);
+        $info[$row]['50_55-avg'] = round($info[$row]['50_55'] / $percentageBase * 100 / 5, 1);
+        $info[$row]['55_60-avg'] = round($info[$row]['55_60'] / $percentageBase * 100 / 5, 1);
+        $info[$row]['60_63-avg'] = round($info[$row]['60_63'] / $percentageBase * 100 / 3, 1);
+        $info[$row]['63_65-avg'] = round($info[$row]['63_65'] / $percentageBase * 100 / 2, 1);
+        $info[$row]['65_67-avg'] = round($info[$row]['65_67'] / $percentageBase * 100 / 2, 1);
+        $info[$row]['67_70-avg'] = round($info[$row]['67_70'] / $percentageBase * 100 / 3, 1);
+        $info[$row]['70_75-avg'] = round($info[$row]['70_75'] / $percentageBase * 100 / 5, 1);
+        $info[$row]['75_80-avg'] = round($info[$row]['75_80'] / $percentageBase * 100 / 5, 1);
+        $info[$row]['80_85-avg'] = round($info[$row]['80_85'] / $percentageBase * 100 / 5, 1);
+        $info[$row]['85_90-avg'] = round($info[$row]['85_90'] / $percentageBase * 100 / 5, 1);
+        $info[$row]['90_95-avg'] = round($info[$row]['90_95'] / $percentageBase * 100 / 5, 1);
+        $info[$row]['95_110-avg'] = round($info[$row]['95_110'] / $percentageBase * 100 / 15, 1);
+
+        // 2) --- calculate and store agegroup valuefor current row
+        // just for the current lor-data-row
+        // 
+        $info[$row][$agegroup_id .'-total'] = $info[$row][$agegroup_id];
         $info[$row][$agegroup_id] = round($info[$row][$agegroup_id] / $percentageBase * 100, 1);
-        $results[$info[$row]['lor_id']] = $info[$row][$agegroup_id];
+
+        $values = array(4);
+        $values[0] = $info[$row][$agegroup_id];
+        $values[1] = $info[$row][$agegroup_id . '-total'];
+        $values[2] = $info[$row][$agegroup_id . '-avg'];
+        $values[3] = $percentageBase;
+
+        $results[$info[$row]['lor_id']] = $values;
+        // var_dump($results);
     }
+    unset($data); // break the reference with the last element
     return $results;
 }
 
@@ -499,6 +547,7 @@ function get_lor_names($id) {
         $info[$row]['district_region'] = $row_data[4];
         if ($info[$row]['lor_id'] === $id) return $info[$row];
     }
+    unset($data); // break the reference with the last element
 }
 
 if ($lor != -1) {
@@ -515,7 +564,10 @@ if ($lor != -1) {
     foreach($areas as $area => $data) {
         $do .= '{';
             $do .= '"lor_id": "'.$area.'", ';
-            $do .= '"value": '.$data;
+            $do .= '"percentage": "'.$data[0].'", ';
+            $do .= '"total": "'.$data[1].'", ';
+            $do .= '"averaged": "'.$data[2].'", ';
+            $do .= '"inhabitants": "'.$data[3].'"';
         $nr++;
         if ($nr === $len) {
             $do .= '}';
@@ -524,6 +576,7 @@ if ($lor != -1) {
             $do .= '}, ';
         }
     }
+    unset($data); // break the reference with the last element
     $do .= ']';
     print $do;
 }

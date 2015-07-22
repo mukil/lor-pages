@@ -38,10 +38,10 @@ $berlin_ages = array($age_row['00-01-avg'], $age_row['01-02-avg'], $age_row['02-
 print '<html><head><title>Die '.$lor_names['lor_name'].' LOR-Seite</title>'
         .'<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-15">'
         .'<link rel="stylesheet" type="text/css" href="pages.css"></link>'
-        .'<script src="libs/raphael-min.js"></script>'
-        .'<script src="libs/g.raphael-min.js"></script>'
-        .'<script src="libs/g.line-min.js"></script>'
-        .'<script src="libs/OpenLayers.js"></script>'
+        .'<script src="/~lor/seiten/libs/raphael-min.js"></script>'
+        .'<script src="/~lor/seiten/libs/g.raphael-min.js"></script>'
+        .'<script src="/~lor/seiten/libs/g.line-min.js"></script>'
+        .'<script src="/~lor/seiten/libs/OpenLayers.js"></script>'
         .'<script src="kml-layer.js"></script>'
         .'<script>'
             .'window.onload = function () {'
@@ -63,7 +63,7 @@ print '<html><head><title>Die '.$lor_names['lor_name'].' LOR-Seite</title>'
                     .'this.tags && this.tags.remove();'
                 .'});'
                 .'chart.symbols.attr({ r: 5 });'
-                .'setupMapNavigation("2013/06", lor_id);'
+                .'setupMapNavigation("2013/12", lor_id);'
              .'}'
         .'</script>'
       .'</head><body>';
@@ -121,6 +121,7 @@ Elternteils gemeldet ist.</li></ul></li>'
 
 }
 
+
 function render_citizen_table($dataset) {
 
     // get data
@@ -130,6 +131,7 @@ function render_citizen_table($dataset) {
     $euFifteen = (int) $dataset['eu-15'];
     $euPoland = (int) $dataset['eu-poland'];
     $euSeven = (int) $dataset['eu-2007'];
+    $euThirteen = (int) $dataset['eu-2013'];
     $exYugoslavia = (int) $dataset['ex-yugoslavia'];
     $exSowjetunion = (int) $dataset['ex-sowjetunion'];
     $turkyie = (int) $dataset['turkyie'];
@@ -149,9 +151,11 @@ function render_citizen_table($dataset) {
     $yugoslavian_migrants_key = round($exYugoslavia / $inhabitants * 100, 1);
     $sowjetunion_migrants_key = round($exSowjetunion / $inhabitants * 100, 1);
     $seven_migrants_key = round($euSeven / $inhabitants * 100, 1);
+    $eu_thirteen_key = round($euThirteen / $inhabitants * 100, 1);
     $turkyie_key = round($turkyie / $inhabitants * 100, 1);
     $other_migrants_key = round($otherCountries / $inhabitants * 100, 1);
     $unsure_migrants_key = round($unsure / $inhabitants * 100, 1);
+
     // berlin wide avgs
     $euFive_avg = $dataset['eu-05-avg'];
     $euFifteen_avg = $dataset['eu-15-avg'];
@@ -160,12 +164,13 @@ function render_citizen_table($dataset) {
     $yugoslavian_migrants_avg = $dataset['ex-yugoslavia-avg'];
     $sowjetunion_migrants_avg = $dataset['ex-sowjetunion-avg'];
     $seven_migrants_avg = $dataset['eu-2007-avg'];
+    $eu_thirteen_avg = $dataset['eu-2013-avg'];
     $turkyie_avg = $dataset['turkyie-avg'];
     $other_countries_avg = $dataset['other_countries-avg'];
     $inhabitants_migrated_avg = $dataset['inhabitants_migrated-avg'];
 
     $table = "";
-    $table .= '<h3>2. Tabelle: Staatsangeh&ouml;rigkeit ausgew&auml;hlter L&auml;nder (Datenstand: Dezember 2013)'
+    $table .= '<h3>2. Tabelle: Staatsangeh&ouml;rigkeit ausgew&auml;hlter L&auml;nder (Datenstand: Juni 2014)'
         .'<a name="staaten">&nbsp;</a></h3>';
     $table .= 'von insgesamt '.$inhabitants.' BewohnerInnen in diesem Planungsraum';
     $table .= '<table cellspacing="0px" cellpadding="0px" id="migration-data-1"><tr><thead>'
@@ -176,7 +181,7 @@ function render_citizen_table($dataset) {
             .'<td>'.$inhabitants_key.' %</td><td class="average">'.$inhabitants_migrated_avg.' %</td></tr>';
         $table .= '<tr><td>Arabische L&auml;nder</td><td>'.$arabicCountries.'</td>'
             .'<td>'.$arabic_migrants_key.' %</td><td class="average">'.$arabic_migrants_avg.' %</td></tr>';
-        $table .= '<tr><td>Ex-Jugoslavien</td><td>'.$exYugoslavia.'</td>'
+        $table .= '<tr><td>Ex-Jugoslavien ***</td><td>'.$exYugoslavia.'</td>'
             .'<td>'.$yugoslavian_migrants_key.' %</td><td class="average">'.$yugoslavian_migrants_avg.' %</td></tr>';
         $table .= '<tr><td>Russland</td><td>'.$exSowjetunion.'</td>'
             .'<td>'.$sowjetunion_migrants_key.' %</td><td class="average">'.$sowjetunion_migrants_avg.' %</td></tr>';
@@ -186,6 +191,8 @@ function render_citizen_table($dataset) {
             .'<td>'.$euFifteen_key.' %</td><td class="average">'.$euFifteen_avg.' %</td></tr>';
         $table .= '<tr><td>EU 26-27 (Erweiterung 2007) **</td><td>'.$euSeven.'</td>'
             .'<td>'.$seven_migrants_key.' %</td><td class="average">'.$seven_migrants_avg.' %</td></tr>';
+        $table .= '<tr><td>EU 28 (Erweiterung 2013) **</td><td>'.$euThirteen.'</td>'
+            .'<td>'.$eu_thirteen_key.' %</td><td class="average">'.$eu_thirteen_avg.' %</td></tr>';
         $table .= '<tr><td>Polen</td><td>'.$euPoland.'</td>'
             .'<td>'.$euPoland_key.' %</td><td class="average">'.$euPoland_avg.' %</td></tr>';
         $table .= '<tr><td>T&uuml;rkei</td><td>'.$turkyie.'</td>'
@@ -194,15 +201,15 @@ function render_citizen_table($dataset) {
             .'<td>'.$other_migrants_key.' %</td><td class="average">'.$other_countries_avg.' %</td></tr>'
             .'<tr><td colspan="4" class="footer">Quelle: <a '
             .'href="http://www.statistik-berlin-brandenburg.de/home.asp">'
-            .'Amt f&uuml;r Statistik Berlin-Brandenburg</a>, Abgestimmter Datenpool Dezember 2013<br/></td></tr>';
+            .'Amt f&uuml;r Statistik Berlin-Brandenburg</a>, Abgestimmter Datenpool Juni 2014<br/></td></tr>';
     $table .= '<tr class="buffer"><td class="footer" colspan="4">(*) die ersten 15 Mitgliedsl&auml;nder der Europ&auml;ischen '
-        .'Union<br/>(**) ohne Polen</td></tr>';
+        .'Union<br/>(**) ohne Polen<br/>(***) ohne Kroatien, ohne Slowenien</td></tr>';
     $table .= '</table>';
 
     // var_dump($dataset);
     return $table;
-
 }
+
 
 function render_age_table($dataset, $lor) {
 
@@ -388,7 +395,7 @@ function get_lor_citizen_row($id) {
 
     // return values
     $lorow = array();
-    $overall = array('eu-05-avg' => 0.0, 'eu-15-avg' => 0.0, 'eu-poland-avg' => 0.0, 'eu-2007-avg' => 0.0,
+    $overall = array('eu-05-avg' => 0.0, 'eu-15-avg' => 0.0, 'eu-poland-avg' => 0.0, 'eu-2007-avg' => 0.0, 'eu-2013-avg' => 0.0,
         'ex-yugoslavia-avg' => 0.0, 'eu-sowjetunion-avg' => 0.0, 'eu-turkyie-avg' => 0.0, 
         'eu-arabic-countries-avg' => 0.0, 'other-countries-avg' => 0.0, 'not_sure-avg' => 0.0, 
         'inhabitants_migrated-avg' => 0.0);
@@ -409,13 +416,14 @@ function get_lor_citizen_row($id) {
         $info[$row]['eu-15'] = $row_data[3];
         $info[$row]['eu-poland'] = $row_data[4];
         $info[$row]['eu-2007'] = $row_data[5];
-        $info[$row]['ex-yugoslavia'] = $row_data[6];
-        $info[$row]['ex-sowjetunion'] = $row_data[7];
-        $info[$row]['turkyie'] = $row_data[8];
-        $info[$row]['arabic_countries'] = $row_data[9];
-        $info[$row]['other_countries'] = $row_data[10];
-        $info[$row]['inhabitants_migrated'] = $row_data[11];
-        $info[$row]['inhabitants'] = $row_data[12];
+        $info[$row]['eu-2013'] = $row_data[6];
+        $info[$row]['ex-yugoslavia'] = $row_data[7];
+        $info[$row]['ex-sowjetunion'] = $row_data[8];
+        $info[$row]['turkyie'] = $row_data[9];
+        $info[$row]['arabic_countries'] = $row_data[10];
+        $info[$row]['other_countries'] = $row_data[11];
+        $info[$row]['inhabitants_migrated'] = $row_data[12];
+        $info[$row]['inhabitants'] = $row_data[13];
         // calculate migration background data avgs for groups in relation to all lors inhabitants
         $percentageBase = $info[$row]['inhabitants'];
         // accumulating calculated averages over all lors
@@ -424,6 +432,7 @@ function get_lor_citizen_row($id) {
             $overall['eu-15-avg'] += $info[$row]['eu-15'] / $percentageBase * 100;
             $overall['eu-poland-avg'] += $info[$row]['eu-poland'] / $percentageBase * 100;
             $overall['eu-2007-avg'] += $info[$row]['eu-2007'] / $percentageBase * 100;
+            $overall['eu-2013-avg'] += $info[$row]['eu-2013'] / $percentageBase * 100;
             $overall['ex-yugoslavia-avg'] += $info[$row]['ex-yugoslavia'] / $percentageBase * 100;
             $overall['ex-sowjetunion-avg'] += $info[$row]['ex-sowjetunion'] / $percentageBase * 100;
             $overall['turkyie-avg'] += $info[$row]['turkyie'] / $percentageBase * 100;
@@ -441,6 +450,7 @@ function get_lor_citizen_row($id) {
     $lorow['eu-15-avg'] = round($overall['eu-15-avg'] / $numberOfLors, 1);
     $lorow['eu-poland-avg'] = round($overall['eu-poland-avg'] / $numberOfLors, 1);
     $lorow['eu-2007-avg'] = round($overall['eu-2007-avg'] / $numberOfLors, 1);
+    $lorow['eu-2013-avg'] = round($overall['eu-2013-avg'] / $numberOfLors, 1);
     $lorow['ex-yugoslavia-avg'] = round($overall['ex-yugoslavia-avg'] / $numberOfLors, 1);
     $lorow['ex-sowjetunion-avg'] = round($overall['ex-sowjetunion-avg'] / $numberOfLors, 1);
     $lorow['turkyie-avg'] = round($overall['turkyie-avg'] / $numberOfLors, 1);

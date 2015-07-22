@@ -38,11 +38,11 @@ $berlin_ages = array($age_row['00-01-avg'], $age_row['01-02-avg'], $age_row['02-
 print '<html><head><title>Die '.$lor_names['lor_name'].' LOR-Seite</title>'
         .'<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-15">'
         .'<link rel="stylesheet" type="text/css" href="pages.css"></link>'
-        .'<script src="libs/raphael-min.js"></script>'
-        .'<script src="libs/g.raphael-min.js"></script>'
-        .'<script src="libs/g.line-min.js"></script>'
-        .'<script src="libs/jquery-1.11.3.min.js"></script>'
-        .'<script src="libs/OpenLayers.js"></script>'
+        .'<script src="/~lor/seiten/libs/raphael-min.js"></script>'
+        .'<script src="/~lor/seiten/libs/g.raphael-min.js"></script>'
+        .'<script src="/~lor/seiten/libs/g.line-min.js"></script>'
+        .'<script src="/~lor/seiten/libs/jquery-1.11.3.min.js"></script>'
+        .'<script src="/~lor/seiten/libs/OpenLayers.js"></script>'
         .'<script src="kml-layer.js"></script>'
         .'<script>'
             .'var global_chart;'
@@ -72,11 +72,11 @@ print '<html><head><title>Die '.$lor_names['lor_name'].' LOR-Seite</title>'
                 .'berlin_percentages = berlin_ages;'
                 // style
                 .'chart.symbols.attr({ r: 5 });'
-                .'setupMapNavigation("2014/06", lor_id);'
+                .'setupMapNavigation("2014/12", lor_id);'
             .'}'
         .'</script>'
 
-        .'<script src="/~malte/lor-page-diagram.js"></script>'
+        .'<script src="/~lor/seiten/lor-page-diagram.js"></script>'
 
       .'</head><body>';
 
@@ -370,7 +370,7 @@ function render_age_table($dataset, $lor_names, $id) {
 function get_lor_migration_row($id) {
 
     // implementation partially copied from http://stackoverflow.com/questions/5299471/php-parsing-a-txt-file
-    $txt_file    = file_get_contents('data/EWRMIGRA201406_1_Kiezatlas.csv');
+    $txt_file    = file_get_contents('data/EWRMIGRA201412_1_Kiezatlas.csv');
     $rows        = explode("\n", $txt_file);
     array_shift($rows);
 
@@ -415,7 +415,7 @@ function get_lor_migration_row($id) {
 function get_lor_citizen_row($id) {
 
     // implementation partially copied from http://stackoverflow.com/questions/5299471/php-parsing-a-txt-file
-    $txt_file    = file_get_contents('data/EWR_AUSL_Staat201406_clean_head.csv');
+    $txt_file    = file_get_contents('data/EWR_AUSL_Staat201412.csv');
     $rows        = explode("\n", $txt_file);
     array_shift($rows);
 
@@ -687,6 +687,8 @@ function render_social_atlas_data($dataset) {
 function render_history_list($id) {
     return '<div class="footer">'
         .'<h4>Vergleichszahlen aus den fr&uuml;heren Erhebungszeitr&auml;umen finden Sie hier:</h4>'
+        .'<a title="Direktlink: zu den Daten dieser LOR-Seite von 2014/06" '
+        .'href="http://jugendserver.spinnenwerk.de/~lor/seiten/2014/06/?lor='.$id.'">06/2014 (HTML)</a>'
         .'<a title="Direktlink: zu den Daten dieser LOR-Seite von 2013/12" '
         .'href="http://jugendserver.spinnenwerk.de/~lor/seiten/2013/12/?lor='.$id.'">12/2013 (HTML)</a>'
         .'<a title="Direktlink: zu den Daten dieser LOR-Seite von 2013/06" '
