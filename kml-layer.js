@@ -19,7 +19,7 @@ function setup_base_map(date_string, age_group) {
 
     var mapbox_tiles = new OpenLayers.Layer.XYZ (
         "Mapbox LOR-Pages",
-        [ "https://api.tiles.mapbox.com/v4/kiezatlas.m7222ia5/${z}/${x}/${y}.png?access_token=pk.eyJ1Ijoia2llemF0bGFzIiwiYSI6InFmRTdOWlUifQ.VjM4-2Ow6uuWR_7b49Y9Eg" ],
+        [ "https://api.tiles.mapbox.com/v4/kiezatlas.a7eb0a68/${z}/${x}/${y}.png?access_token=pk.eyJ1Ijoia2llemF0bGFzIiwiYSI6InFmRTdOWlUifQ.VjM4-2Ow6uuWR_7b49Y9Eg" ],
         {
             attribution: '&copy; <a href="https://www.mapbox.com/about/maps/"">MapBox</a> '
                 + '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> '

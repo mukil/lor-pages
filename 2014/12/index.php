@@ -24,8 +24,8 @@ if (isset($_GET['lor'])) {
 }
 
 $lor_names = get_lor_names($lor);
-// $migration_row = get_lor_migration_row($lor);
-// $citizen_row = get_lor_citizen_row($lor);
+$migration_row = get_lor_migration_row($lor);
+$citizen_row = get_lor_citizen_row($lor);
 $age_row = get_lor_age_row($lor);
 // $monitoring_data = 
 // $social_data = 
@@ -120,7 +120,7 @@ function render_migration_table($dataset) {
         .'<td>&nbsp;</td><td>&nbsp;</td></tr>'
         .'<tr><td colspan="4" class="footer">Quelle: <a '
         .'href="http://www.statistik-berlin-brandenburg.de/home.asp">'
-        .'Amt f&uuml;r Statistik Berlin-Brandenburg</a>, Abgestimmter Datenpool Juni 2014<br/></td></tr>';
+        .'Amt f&uuml;r Statistik Berlin-Brandenburg</a>, Abgestimmter Datenpool Dezember 2014<br/></td></tr>';
     $tab1 .= '</table>';
     $tab1 .= '<div class="footer">(*) In der Einwohnerregisterstatistik werden als Personen mit Migrationshintergrund '
         .'ausgewiesen:<ol><li>Ausl&auml;ndische Staatsangeh&ouml;rige</li><li>Deutsche mit Migrationshintergrund<ul>'
@@ -209,7 +209,7 @@ function render_citizen_table($dataset) {
             .'<td>'.$other_migrants_key.' %</td><td class="average">'.$other_countries_avg.' %</td></tr>'
             .'<tr><td colspan="4" class="footer">Quelle: <a '
             .'href="http://www.statistik-berlin-brandenburg.de/home.asp">'
-            .'Amt f&uuml;r Statistik Berlin-Brandenburg</a>, Abgestimmter Datenpool Juni 2014<br/></td></tr>';
+            .'Amt f&uuml;r Statistik Berlin-Brandenburg</a>, Abgestimmter Datenpool Dezember 2014<br/></td></tr>';
     $table .= '<tr class="buffer"><td class="footer" colspan="4">(*) die ersten 15 Mitgliedsl&auml;nder der Europ&auml;ischen '
         .'Union<br/>(**) ohne Polen</td></tr>';
     $table .= '</table>';
@@ -723,8 +723,8 @@ function render_city_navigation() {
 // --
 
 
-// ### data missing - $table1 = render_migration_table($migration_row);
-// ### data missing - $table2 = render_citizen_table($citizen_row);
+$table1 = render_migration_table($migration_row);
+$table2 = render_citizen_table($citizen_row);
 $table3 = render_age_table($age_row, $lor_names, $lor);
 // $monitoring = render_monitoring_data($monitoring_data);
 // $social = render_social_atlas_data($social_data);
@@ -733,10 +733,10 @@ print '<div class="header">Bev&ouml;lkerungsstruktur im "Lebensweltlich orientie
     . $lor . '</i>) <b>'.$lor_names['lor_name'].'</b> in der Bezirksregion <b>'
     .$lor_names['district_region'].'</b> des Bezirks <b>Berlin-'.$lor_names['district'].'</b></div>';
 
-// print '<h2>Migration, Staatsangeh&ouml;rigkeit und Altersverteilung</h2>';
+print '<h2>Migration, Staatsangeh&ouml;rigkeit und Altersverteilung</h2>';
 
-// ### data missing - print $table1;
-// ### data missing - print $table2;
+print $table1;
+print $table2;
 
 print $table3;
 
