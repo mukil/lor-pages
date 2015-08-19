@@ -44,7 +44,7 @@ function setupMapNavigation(date_string, lor_id) {
         styleMap: dStyleMap, projection: map.displayProjection,
         strategies: [ new OpenLayers.Strategy.Fixed() ],
         protocol: new OpenLayers.Protocol.HTTP({
-            url: "data/LOR-Planungsraeume.kml", 
+            url: "/berlin/2014/06/data/LOR-Planungsraeume-rev2.kml",
             format: new OpenLayers.Format.KML({ 'extractAttributes': true })
         })
     })
@@ -77,7 +77,7 @@ function setupMapNavigation(date_string, lor_id) {
             var popup = new OpenLayers.Popup.Anchored("link", 
                 feature.geometry.getBounds().getCenterLonLat(),
                 new OpenLayers.Size(50,50),
-                '<a href="/~lor/seiten/'+date_string+'/?lor=' + lorId+ '">' +feature.data['name']+ '</a>',
+                '<a href="/berlin/'+date_string+'/?lor=' + lorId+ '">' +feature.data['name']+ '</a>',
                 null, false, function(e) { popup.destroy() }
             );
             popup.autoSize = true

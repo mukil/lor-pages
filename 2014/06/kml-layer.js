@@ -64,7 +64,7 @@ function setupMapNavigation(date_string, lor_id) {
         styleMap: dStyleMap, projection: map.displayProjection,
         strategies: [ new OpenLayers.Strategy.Fixed() ],
         protocol: new OpenLayers.Protocol.HTTP({
-            url: "data/LOR-Planungsraeume-rev2.kml",
+            url: "/berlin/2014/06/data/LOR-Planungsraeume-rev2.kml",
             format: new OpenLayers.Format.KML({ 'extractAttributes': true })
         })
     })

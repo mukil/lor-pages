@@ -62,11 +62,11 @@ function render_lor_data_geometry (year, age) {
     if (typeof layer !== "undefined") map.removeLayer(layer)
 
     // projection: new OpenLayers.Projection("EPSG:900913") breaks the setup
-    layer = new OpenLayers.Layer.Vector("KML Layer", {
+    layer = new OpenLayers.Layer.Vector("Planungsraum-Ebene", {
         styleMap: styleMap, projection: map.displayProjection,
         strategies: [ new OpenLayers.Strategy.Fixed() ],
         protocol: new OpenLayers.Protocol.HTTP({
-            url: "2012/06/data/LOR-Planungsraeume-rev2.kml",
+            url: "/berlin/2014/06/data/LOR-Planungsraeume-rev2.kml",
             format: new OpenLayers.Format.KML({ 'extractAttributes': true })
         })
     })
@@ -79,7 +79,7 @@ function render_lor_data_geometry (year, age) {
         "featureunselected": onFeatureUnselect,
         "loadend": function(e) {
 
-            var url = "/~lor/seiten/"+year+"/calculation.php?agegroup_id=" + age
+            var url = "/berlin/"+year+"/calculation.php?agegroup_id=" + age
             var lor_values;
 
             $.get(url, function (data) {
@@ -153,7 +153,7 @@ function render_lor_data_geometry (year, age) {
             '<b>'+feature.attributes['absolute_value']+'</b> von <b>'+feature.attributes['inhabitants_value']+'</b> gemeldeten Personen, sind'
             + ' <b>'+feature.attributes['percentage_value']+'%</b> ('
             + '<em>LOR-Average: </em><b>'+feature.attributes['averaged_value']+'%</b>)<br/>'
-            + '<a href="/~lor/seiten/'+year+'/?lor=' + lorId+ '">zur LOR-Seite \"' +feature.data['name']+ '\"</a><br/>',
+            + '<a href="/berlin/'+year+'/?lor=' + lorId+ '">zur LOR-Seite \"' +feature.data['name']+ '\"</a><br/>',
             null, true, function(e) { popup.destroy() }
         );
         popup.panMapIfOutOfView = true;
@@ -178,9 +178,18 @@ function create_style_map () {
         strokeColor: "#666", strokeWidth: 1, fillColor: "#000", fillOpacity: 1, //, cursor: "pointer"
     })
 
+    var ruleEmpty = new OpenLayers.Rule({
+            filter: new OpenLayers.Filter.Comparison({
+                    type: OpenLayers.Filter.Comparison.EQUAL_TO,
+                    property: "averaged_value",
+                    value: 0,
+                }),
+            symbolizer: { fillColor: "#fff", fillOpacity: 0 }
+        })
+
     var ruleBase = new OpenLayers.Rule({
             filter: new OpenLayers.Filter.Comparison({
-                    type: OpenLayers.Filter.Comparison.GREATER_THAN_OR_EQUAL_TO,
+                    type: OpenLayers.Filter.Comparison.GREATER_THAN,
                     property: "averaged_value",
                     value: 0,
                 }),
@@ -247,7 +256,7 @@ function create_style_map () {
                 }),
             symbolizer: { fillColor: "#343434", fillOpacity: 0.9 }
         })
-    dStyle.addRules([ruleBase, ruleLow, ruleMiddle, ruleHigh, ruleTop, ruleOver, ruleOverTop, ruleMegaOver])
+    dStyle.addRules([ruleEmpty, ruleBase, ruleLow, ruleMiddle, ruleHigh, ruleTop, ruleOver, ruleOverTop, ruleMegaOver])
 
     var defaultStyle = OpenLayers.Util.applyDefaults( dStyle, OpenLayers.Feature.Vector.style["default"]);
     var dStyleMap = new OpenLayers.StyleMap({

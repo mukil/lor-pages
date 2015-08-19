@@ -38,11 +38,11 @@ $berlin_ages = array($age_row['00-01-avg'], $age_row['01-02-avg'], $age_row['02-
 print '<html><head><title>Die '.$lor_names['lor_name'].' LOR-Seite</title>'
         .'<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-15">'
         .'<link rel="stylesheet" type="text/css" href="pages.css"></link>'
-        .'<script src="/~lor/seiten/libs/raphael-min.js"></script>'
-        .'<script src="/~lor/seiten/libs/g.raphael-min.js"></script>'
-        .'<script src="/~lor/seiten/libs/g.line-min.js"></script>'
-        .'<script src="/~lor/seiten/libs/jquery-1.11.3.min.js"></script>'
-        .'<script src="/~lor/seiten/libs/OpenLayers.js"></script>'
+        .'<script src="/berlin/libs/raphael-min.js"></script>'
+        .'<script src="/berlin/libs/g.raphael-min.js"></script>'
+        .'<script src="/berlin/libs/g.line-min.js"></script>'
+        .'<script src="/berlin/libs/jquery-1.11.3.min.js"></script>'
+        .'<script src="/berlin/libs/OpenLayers.js"></script>'
         .'<script src="kml-layer.js"></script>'
         .'<script>'
             .'var global_chart;'
@@ -76,7 +76,7 @@ print '<html><head><title>Die '.$lor_names['lor_name'].' LOR-Seite</title>'
             .'}'
         .'</script>'
 
-        .'<script src="/~lor/seiten/lor-page-diagram.js"></script>'
+        .'<script src="/berlin/lor-page-diagram.js"></script>'
 
       .'</head><body>';
 
@@ -138,13 +138,14 @@ Elternteils gemeldet ist.</li></ul></li>'
 
 function render_citizen_table($dataset) {
 
-    // get data
+ // get data
     $lor_id = (int) $dataset['lor_id'];
     $timestamp = (int) $dataset['timestamp'];
     $euFive = (int) $dataset['eu-05'];
     $euFifteen = (int) $dataset['eu-15'];
     $euPoland = (int) $dataset['eu-poland'];
     $euSeven = (int) $dataset['eu-2007'];
+    $euThirteen = (int) $dataset['eu-2013'];
     $exYugoslavia = (int) $dataset['ex-yugoslavia'];
     $exSowjetunion = (int) $dataset['ex-sowjetunion'];
     $turkyie = (int) $dataset['turkyie'];
@@ -160,6 +161,7 @@ function render_citizen_table($dataset) {
     $euFive_key = round($euFive / $inhabitants * 100, 1);
     $euFifteen_key = round($euFifteen / $inhabitants * 100, 1);
     $euPoland_key = round($euPoland / $inhabitants * 100, 1);
+    $euThirteen_key = round($euThirteen / $inhabitants * 100, 1);
     $arabic_migrants_key = round($arabicCountries / $inhabitants * 100, 1);
     $yugoslavian_migrants_key = round($exYugoslavia / $inhabitants * 100, 1);
     $sowjetunion_migrants_key = round($exSowjetunion / $inhabitants * 100, 1);
@@ -175,6 +177,7 @@ function render_citizen_table($dataset) {
     $yugoslavian_migrants_avg = $dataset['ex-yugoslavia-avg'];
     $sowjetunion_migrants_avg = $dataset['ex-sowjetunion-avg'];
     $seven_migrants_avg = $dataset['eu-2007-avg'];
+    $euThirteen_avg = $dataset['eu-2013-avg'];
     $turkyie_avg = $dataset['turkyie-avg'];
     $other_countries_avg = $dataset['other_countries-avg'];
     $inhabitants_migrated_avg = $dataset['inhabitants_migrated-avg'];
@@ -201,6 +204,8 @@ function render_citizen_table($dataset) {
             .'<td>'.$euFifteen_key.' %</td><td class="average">'.$euFifteen_avg.' %</td></tr>';
         $table .= '<tr><td>EU 26-27 (Erweiterung 2007) **</td><td>'.$euSeven.'</td>'
             .'<td>'.$seven_migrants_key.' %</td><td class="average">'.$seven_migrants_avg.' %</td></tr>';
+        $table .= '<tr><td>EU 28 (Erweiterung 2013) **</td><td>'.$euThirteen.'</td>'
+            .'<td>'.$euThirteen_key.' %</td><td class="average">'.$euThirteen_avg.' %</td></tr>';
         $table .= '<tr><td>Polen</td><td>'.$euPoland.'</td>'
             .'<td>'.$euPoland_key.' %</td><td class="average">'.$euPoland_avg.' %</td></tr>';
         $table .= '<tr><td>T&uuml;rkei</td><td>'.$turkyie.'</td>'
@@ -419,7 +424,7 @@ function get_lor_citizen_row($id) {
 
     // return values
     $lorow = array();
-    $overall = array('eu-05-avg' => 0.0, 'eu-15-avg' => 0.0, 'eu-poland-avg' => 0.0, 'eu-2007-avg' => 0.0,
+    $overall = array('eu-05-avg' => 0.0, 'eu-15-avg' => 0.0, 'eu-poland-avg' => 0.0, 'eu-2007-avg' => 0.0, 'eu-2013-avg' => 0.0,
         'ex-yugoslavia-avg' => 0.0, 'eu-sowjetunion-avg' => 0.0, 'eu-turkyie-avg' => 0.0, 
         'eu-arabic-countries-avg' => 0.0, 'other-countries-avg' => 0.0, 'not_sure-avg' => 0.0, 
         'inhabitants_migrated-avg' => 0.0);
@@ -440,13 +445,14 @@ function get_lor_citizen_row($id) {
         $info[$row]['eu-15'] = $row_data[3];
         $info[$row]['eu-poland'] = $row_data[4];
         $info[$row]['eu-2007'] = $row_data[5];
-        $info[$row]['ex-yugoslavia'] = $row_data[6];
-        $info[$row]['ex-sowjetunion'] = $row_data[7];
-        $info[$row]['turkyie'] = $row_data[8];
-        $info[$row]['arabic_countries'] = $row_data[9];
-        $info[$row]['other_countries'] = $row_data[10];
-        $info[$row]['inhabitants_migrated'] = $row_data[11];
-        $info[$row]['inhabitants'] = $row_data[12];
+        $info[$row]['eu-2013'] = $row_data[6];
+        $info[$row]['ex-yugoslavia'] = $row_data[7];
+        $info[$row]['ex-sowjetunion'] = $row_data[8];
+        $info[$row]['turkyie'] = $row_data[9];
+        $info[$row]['arabic_countries'] = $row_data[10];
+        $info[$row]['other_countries'] = $row_data[11];
+        $info[$row]['inhabitants_migrated'] = $row_data[12];
+        $info[$row]['inhabitants'] = $row_data[13];
         // calculate migration background data avgs for groups in relation to all lors inhabitants
         $percentageBase = $info[$row]['inhabitants'];
         // accumulating calculated averages over all lors
@@ -455,6 +461,7 @@ function get_lor_citizen_row($id) {
             $overall['eu-15-avg'] += $info[$row]['eu-15'] / $percentageBase * 100;
             $overall['eu-poland-avg'] += $info[$row]['eu-poland'] / $percentageBase * 100;
             $overall['eu-2007-avg'] += $info[$row]['eu-2007'] / $percentageBase * 100;
+            $overall['eu-2013-avg'] += $info[$row]['eu-2013'] / $percentageBase * 100;
             $overall['ex-yugoslavia-avg'] += $info[$row]['ex-yugoslavia'] / $percentageBase * 100;
             $overall['ex-sowjetunion-avg'] += $info[$row]['ex-sowjetunion'] / $percentageBase * 100;
             $overall['turkyie-avg'] += $info[$row]['turkyie'] / $percentageBase * 100;
@@ -472,6 +479,7 @@ function get_lor_citizen_row($id) {
     $lorow['eu-15-avg'] = round($overall['eu-15-avg'] / $numberOfLors, 1);
     $lorow['eu-poland-avg'] = round($overall['eu-poland-avg'] / $numberOfLors, 1);
     $lorow['eu-2007-avg'] = round($overall['eu-2007-avg'] / $numberOfLors, 1);
+    $lorow['eu-2013-avg'] = round($overall['eu-2013-avg'] / $numberOfLors, 1);
     $lorow['ex-yugoslavia-avg'] = round($overall['ex-yugoslavia-avg'] / $numberOfLors, 1);
     $lorow['ex-sowjetunion-avg'] = round($overall['ex-sowjetunion-avg'] / $numberOfLors, 1);
     $lorow['turkyie-avg'] = round($overall['turkyie-avg'] / $numberOfLors, 1);
@@ -676,27 +684,29 @@ function render_social_atlas_data($dataset) {
 
 function render_history_list($id) {
     return '<div class="footer">'
-        .'<h4>Vergleichszahlen aus den fr&uuml;heren Erhebungszeitr&auml;umen finden Sie hier:</h4>'
+        .'<h4>Vergleichszahlen aus den anderen Erhebungszeitr&auml;umen finden Sie hier:</h4>'
+        .'<a title="Direktlink: zu den Daten dieser LOR-Seite von 2014/12" '
+        .'href="http://mikromedia.de/berlin/2014/12/?lor='.$id.'">12/2014 (HTML)</a>'
         .'<a title="Direktlink: zu den Daten dieser LOR-Seite von 2013/12" '
-        .'href="http://jugendserver.spinnenwerk.de/~lor/seiten/2013/12/?lor='.$id.'">12/2013 (HTML)</a>'
+        .'href="http://mikromedia.de/berlin/2013/12/?lor='.$id.'">12/2013 (HTML)</a>'
         .'<a title="Direktlink: zu den Daten dieser LOR-Seite von 2013/06" '
-        .'href="http://jugendserver.spinnenwerk.de/~lor/seiten/2013/06/?lor='.$id.'">06/2013 (HTML)</a>'
+        .'href="http://mikromedia.de/berlin/2013/06/?lor='.$id.'">06/2013 (HTML)</a>'
         .'<a title="Direktlink: zu den Daten dieser LOR-Seite von 2012/12" '
-        .'href="http://jugendserver.spinnenwerk.de/~lor/seiten/2012/12/?lor='.$id.'">12/2012 (HTML)</a>'
+        .'href="http://mikromedia.de/berlin/2012/12/?lor='.$id.'">12/2012 (HTML)</a>'
         .'<a title="Direktlink: zu den Daten dieser LOR-Seite von 2012/06" '
-        .'href="http://jugendserver.spinnenwerk.de/~lor/seiten/2012/06/?lor='.$id.'">06/2012 (HTML)</a>'
+        .'href="http://mikromedia.de/berlin/2012/06/?lor='.$id.'">06/2012 (HTML)</a>'
         .'<a title="Direktlink: zu den Daten dieser LOR-Seite von 2011/12" '
-        .'href="http://jugendserver.spinnenwerk.de/~lor/seiten/2011/12/?lor='.$id.'">12/2011 (HTML)</a>'
+        .'href="http://mikromedia.de/berlin/2011/12/?lor='.$id.'">12/2011 (HTML)</a>'
         .'<a title="Direktlink: PDF (~280 KByte)" alt="Direktlink: PDF (~280 KByte)" '
-        .'href="http://jugendserver.spinnenwerk.de/~lor/analysen_06_2011/'.$id.'.pdf">06/2011 (PDF)</a>'
+        .'href="http://mikromedia.de/berlin/analysen_06_2011/'.$id.'.pdf">06/2011 (PDF)</a>'
         .'<a title="Direktlink: PDF (~280 KByte)" alt="Direktlink: PDF (~280 KByte)" '
-        .'href="http://jugendserver.spinnenwerk.de/~lor/analysen_02_2011/'.$id.'.pdf">12/2010 (PDF)</a>'
+        .'href="http://mikromedia.de/berlin/analysen_02_2011/'.$id.'.pdf">12/2010 (PDF)</a>'
         .'<a title="Direktlink: PDF (~280 KByte)" alt="Direktlink: PDF (~280 KByte)" '
-        .'href="http://jugendserver.spinnenwerk.de/~lor/analysen_2010/'.$id.'.pdf">2010 (PDF)</a>'
+        .'href="http://mikromedia.de/berlin/analysen_2010/'.$id.'.pdf">2010 (PDF)</a>'
         .'<a title="Direktlink: PDF (~280 KByte)" alt="Direktlink: PDF (~280 KByte)" '
-        .'href="http://jugendserver.spinnenwerk.de/~lor/analysen_2009/'.$id.'.pdf">2009 (PDF)</a>'
+        .'href="http://mikromedia.de/berlin/analysen_2009/'.$id.'.pdf">2009 (PDF)</a>'
         .'<a title="Direktlink: PDF (~280 KByte)" alt="Direktlink: PDF (~280 KByte)" '
-        .'href="http://jugendserver.spinnenwerk.de/~lor/analysen_2008/'.$id.'.pdf">2008 (PDF)</a></div>';
+        .'href="http://mikromedia.de/berlin/analysen_2008/'.$id.'.pdf">2008 (PDF)</a></div>';
 }
 
 function render_city_navigation() {

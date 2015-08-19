@@ -559,7 +559,7 @@ if ($lor != -1) {
 
     $areas = get_all_percentage_values($agegroup_id);
     $len = count($areas);
-    $nr = 1;
+    $nr = 0;
     $do = '[';
     foreach($areas as $area => $data) {
         $do .= '{';

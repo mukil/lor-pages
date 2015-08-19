@@ -74,10 +74,21 @@ g path {
     color: #fff;
     padding: 10px;
     min-width: 180px;
+    font-size: .9em;
 }
 
 .dev-version a {
     color: #fff;
+}
+
+@media (max-width: 1200px) {
+    .dev-version {
+        max-width: 120px;
+        padding: 15px;
+        top: 0px;
+        left: 0px;
+        font-size: .8em;
+    }
 }
 
 #link {
