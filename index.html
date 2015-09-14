@@ -24,7 +24,7 @@
             age_selector = selection[0].selectedOptions[0].value
             // window.document.location.href = "?"+ age_selector
             render_lor_data_geometry(year_string, age_selector)
-            window.history.pushState( {}, 'Einstieg in die LOR-Seiten', '/~malte/?'+ age_selector)
+            window.history.pushState( {}, 'Einstieg in die LOR-Seiten', '/berlin/?'+ age_selector)
             $('#age-selector').val(age_selector)
             $('.agegroup-name').text($('#age-selector')[0].selectedOptions[0].innerHTML)
         }

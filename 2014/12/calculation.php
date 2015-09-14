@@ -2,6 +2,8 @@
 
 $lor = 0;
 
+error_reporting(E_ALL ^ E_WARNING);
+
 // Main Controler LOR-JSON Assembler
 if (isset($_GET['lor'])) {
     // # doors / imagemap entry: selects current day with JS, after loading all images
@@ -285,8 +287,8 @@ function get_lor_age_row($id) {
         '03-05-avg' => 0.0, '05-06-avg' => 0.0, '06-07-avg' => 0.0, '07-08-avg' => 0.0, '08-10-avg' => 0.0, '10-12-avg'
         => 0.0, '12-14-avg' => 0.0, '14-15-avg' => 0.0, '15-18-avg' => 0.0, '18-21-avg' => 0.0, '21-25-avg' => 0.0,
         '25-27-avg' => 0.0, '27-30-avg' => 0.0, '30-35-avg' => 0.0, '35-40-avg' => 0.0, '40-45-avg' => 0.0,
-        '45-50-avg' => 0.0, '50-55-avg' => 0.0, '55-60-avg' => 0.0, '65-70-avg' => 0.0, '70-75-avg' => 0.0,
-        '75-80-avg' => 0.0, '80-85-avg' => 0.0, '85-90-avg' => 0.0, '90-110-avg' => 0.0);
+        '45-50-avg' => 0.0, '50-55-avg' => 0.0, '55-60-avg' => 0.0, '60-63-avg' => 0.0, '63-65-avg' => 0.0, '65-67-avg' => 0.0, '67-70-avg' => 0.0, '70-75-avg' => 0.0,
+        '75-80-avg' => 0.0, '80-85-avg' => 0.0, '85-90-avg' => 0.0, '90-95-avg' => 0.0, '95-110-avg' => 0.0);
 
     $line = 0;
     $startLine = 1;
@@ -396,38 +398,38 @@ function get_lor_age_row($id) {
         $line++;
     }
     // return berlin wide avg-values as a part of the searched for lor-data-row
-    $lorow['00-01-avg'] += round($overall['00-01-avg'] / $numberOfLors, 1);
-    $lorow['01-02-avg'] += round($overall['01-02-avg'] / $numberOfLors, 1);
-    $lorow['02-03-avg'] += round($overall['02-03-avg'] / $numberOfLors, 1);
-    $lorow['03-05-avg'] += round($overall['03-05-avg'] / $numberOfLors, 1);
-    $lorow['05-06-avg'] += round($overall['05-06-avg'] / $numberOfLors, 1);
-    $lorow['06-07-avg'] += round($overall['06-07-avg'] / $numberOfLors, 1);
-    $lorow['07-08-avg'] += round($overall['07-08-avg'] / $numberOfLors, 1);
-    $lorow['08-10-avg'] += round($overall['08-10-avg'] / $numberOfLors, 1);
-    $lorow['10-12-avg'] += round($overall['10-12-avg'] / $numberOfLors, 1);
-    $lorow['12-14-avg'] += round($overall['12-14-avg'] / $numberOfLors, 1);
-    $lorow['14-15-avg'] += round($overall['14-15-avg'] / $numberOfLors, 1);
-    $lorow['15-18-avg'] += round($overall['15-18-avg'] / $numberOfLors, 1);
-    $lorow['18-21-avg'] += round($overall['18-21-avg'] / $numberOfLors, 1);
-    $lorow['21-25-avg'] += round($overall['21-25-avg'] / $numberOfLors, 1);
-    $lorow['25-27-avg'] += round($overall['25-27-avg'] / $numberOfLors, 1);
-    $lorow['27-30-avg'] += round($overall['27-30-avg'] / $numberOfLors, 1);
-    $lorow['30-35-avg'] += round($overall['30-35-avg'] / $numberOfLors, 1);
-    $lorow['35-40-avg'] += round($overall['35-40-avg'] / $numberOfLors, 1);
-    $lorow['40-45-avg'] += round($overall['40-45-avg'] / $numberOfLors, 1);
-    $lorow['45-50-avg'] += round($overall['45-50-avg'] / $numberOfLors, 1);
-    $lorow['50-55-avg'] += round($overall['50-55-avg'] / $numberOfLors, 1);
-    $lorow['55-60-avg'] += round($overall['55-60-avg'] / $numberOfLors, 1);
-    $lorow['60-63-avg'] += round($overall['60-63-avg'] / $numberOfLors, 1);
-    $lorow['63-65-avg'] += round($overall['63-65-avg'] / $numberOfLors, 1);
-    $lorow['65-67-avg'] += round($overall['65-67-avg'] / $numberOfLors, 1);
-    $lorow['67-70-avg'] += round($overall['67-70-avg'] / $numberOfLors, 1);
-    $lorow['70-75-avg'] += round($overall['70-75-avg'] / $numberOfLors, 1);
-    $lorow['75-80-avg'] += round($overall['75-80-avg'] / $numberOfLors, 1);
-    $lorow['80-85-avg'] += round($overall['80-85-avg'] / $numberOfLors, 1);
-    $lorow['85-90-avg'] += round($overall['85-90-avg'] / $numberOfLors, 1);
-    $lorow['90-95-avg'] += round($overall['90-95-avg'] / $numberOfLors, 1);
-    $lorow['95-110-avg'] += round($overall['95-110-avg'] / $numberOfLors, 1);
+    $lorow['00-01-avg'] = round($overall['00-01-avg'] / $numberOfLors, 1);
+    $lorow['01-02-avg'] = round($overall['01-02-avg'] / $numberOfLors, 1);
+    $lorow['02-03-avg'] = round($overall['02-03-avg'] / $numberOfLors, 1);
+    $lorow['03-05-avg'] = round($overall['03-05-avg'] / $numberOfLors, 1);
+    $lorow['05-06-avg'] = round($overall['05-06-avg'] / $numberOfLors, 1);
+    $lorow['06-07-avg'] = round($overall['06-07-avg'] / $numberOfLors, 1);
+    $lorow['07-08-avg'] = round($overall['07-08-avg'] / $numberOfLors, 1);
+    $lorow['08-10-avg'] = round($overall['08-10-avg'] / $numberOfLors, 1);
+    $lorow['10-12-avg'] = round($overall['10-12-avg'] / $numberOfLors, 1);
+    $lorow['12-14-avg'] = round($overall['12-14-avg'] / $numberOfLors, 1);
+    $lorow['14-15-avg'] = round($overall['14-15-avg'] / $numberOfLors, 1);
+    $lorow['15-18-avg'] = round($overall['15-18-avg'] / $numberOfLors, 1);
+    $lorow['18-21-avg'] = round($overall['18-21-avg'] / $numberOfLors, 1);
+    $lorow['21-25-avg'] = round($overall['21-25-avg'] / $numberOfLors, 1);
+    $lorow['25-27-avg'] = round($overall['25-27-avg'] / $numberOfLors, 1);
+    $lorow['27-30-avg'] = round($overall['27-30-avg'] / $numberOfLors, 1);
+    $lorow['30-35-avg'] = round($overall['30-35-avg'] / $numberOfLors, 1);
+    $lorow['35-40-avg'] = round($overall['35-40-avg'] / $numberOfLors, 1);
+    $lorow['40-45-avg'] = round($overall['40-45-avg'] / $numberOfLors, 1);
+    $lorow['45-50-avg'] = round($overall['45-50-avg'] / $numberOfLors, 1);
+    $lorow['50-55-avg'] = round($overall['50-55-avg'] / $numberOfLors, 1);
+    $lorow['55-60-avg'] = round($overall['55-60-avg'] / $numberOfLors, 1);
+    $lorow['60-63-avg'] = round($overall['60-63-avg'] / $numberOfLors, 1);
+    $lorow['63-65-avg'] = round($overall['63-65-avg'] / $numberOfLors, 1);
+    $lorow['65-67-avg'] = round($overall['65-67-avg'] / $numberOfLors, 1);
+    $lorow['67-70-avg'] = round($overall['67-70-avg'] / $numberOfLors, 1);
+    $lorow['70-75-avg'] = round($overall['70-75-avg'] / $numberOfLors, 1);
+    $lorow['75-80-avg'] = round($overall['75-80-avg'] / $numberOfLors, 1);
+    $lorow['80-85-avg'] = round($overall['80-85-avg'] / $numberOfLors, 1);
+    $lorow['85-90-avg'] = round($overall['85-90-avg'] / $numberOfLors, 1);
+    $lorow['90-95-avg'] = round($overall['90-95-avg'] / $numberOfLors, 1);
+    $lorow['95-110-avg'] = round($overall['95-110-avg'] / $numberOfLors, 1);
     return $lorow;
 }
 
