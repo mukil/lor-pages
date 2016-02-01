@@ -66,7 +66,7 @@ function render_lor_data_geometry (year, age) {
         styleMap: styleMap, projection: map.displayProjection,
         strategies: [ new OpenLayers.Strategy.Fixed() ],
         protocol: new OpenLayers.Protocol.HTTP({
-            url: "/berlin/2014/06/data/LOR-Planungsraeume-rev2.kml",
+            url: "/seiten/2014/06/data/LOR-Planungsraeume-rev2.kml",
             format: new OpenLayers.Format.KML({ 'extractAttributes': true })
         })
     })
@@ -79,7 +79,7 @@ function render_lor_data_geometry (year, age) {
         "featureunselected": onFeatureUnselect,
         "loadend": function(e) {
 
-            var url = "/berlin/"+year+"/calculation.php?agegroup_id=" + age
+            var url = "/seiten/"+year+"/calculation.php?agegroup_id=" + age
             var lor_values;
 
             $.get(url, function (data) {
@@ -153,7 +153,7 @@ function render_lor_data_geometry (year, age) {
             '<b>'+feature.attributes['absolute_value']+'</b> von <b>'+feature.attributes['inhabitants_value']+'</b> gemeldeten Personen, sind'
             + ' <b>'+feature.attributes['percentage_value']+'%</b> ('
             + '<em>LOR-Average: </em><b>'+feature.attributes['averaged_value']+'%</b>)<br/>'
-            + '<a href="/berlin/'+year+'/?lor=' + lorId+ '">zur LOR-Seite \"' +feature.data['name']+ '\"</a><br/>',
+            + '<a href="/seiten/'+year+'/?lor=' + lorId+ '">zur LOR-Seite \"' +feature.data['name']+ '\"</a><br/>',
             null, true, function(e) { popup.destroy() }
         );
         popup.panMapIfOutOfView = true;

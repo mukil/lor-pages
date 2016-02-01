@@ -24,7 +24,7 @@
             age_selector = selection[0].selectedOptions[0].value
             // window.document.location.href = "?"+ age_selector
             render_lor_data_geometry(year_string, age_selector)
-            window.history.pushState( {}, 'Einstieg in die LOR-Seiten', '/berlin/?'+ age_selector)
+            window.history.pushState( {}, 'Einstieg in die LOR-Seiten', '/seiten/?'+ age_selector)
             $('#age-selector').val(age_selector)
             $('.agegroup-name').text($('#age-selector')[0].selectedOptions[0].innerHTML)
         }
@@ -56,7 +56,7 @@
     </p-->
     <p>
         <form>
-            <h3 name="age-selector">Andere Altersgruppe ausw&auml;hlen</h3>
+            <h3 name="age-selector">Relativer Anteil der <span class="agegroup-name">...</span>j&auml;hrigen mit gemeldetem Wohnsitz in den 447 LORs (&raquo;lebensweltlich orientierte Planungsr&auml;ume&laquo;) Berlin, Dezember 2014
             <select id="age-selector" type="dropdown" onchange="load_other_dataset()">
                 <option id="00_01" value="00_01">0-1</option>
                 <option id="01_02" value="01_02">1-2</option>
@@ -90,12 +90,12 @@
                 <option id="85_90" value="85_90">85-90</option>
                 <option id="90_95" value="90_95">90-95</option>
                 <option id="95_110" value="95_110">95-110</option>
-            </select>
+            </select></h3>
             <!--button type="submit">ausw&auml;hlen</button-->
         </form>
     </p>
 
-    <h3 id="nav-header">Relativer Anteil der <span class="agegroup-name">...</span>j&auml;hrigen mit gemeldetem Wohnsitz in den 447 LORs (&raquo;lebensweltlich orientierte Planungsr&auml;ume&laquo;) Berlin, Dezember 2014</h3>
+    <!--h3 id="nav-header"></h3-->
 
     <div id="berlin-citymap"></div>
 
@@ -108,7 +108,7 @@
     <div class="footer">
         Realisation: <a href="http://www.mikromedia.de" title="Website: mikromedia.de" alt="Website: mikromedia.de">B&uuml;ro f&uuml;r Informationsarbeit</a> in Zusammenarbeit mit dem <a href="http://www.statistik-berlin-brandenburg.de/">Amt f&uuml;r Statistik Berlin-Brandenburg</a> und der <a href="http://www.gska-berlin.de/index.html" title="Website: GskA Berlin" alt="Website: GskA Berlin">GskA Berlin</a>. Die hier zum Einsatz kommende und erweiterte LOR-Geometrie (KML-Datei) basiert auf dem Stand <a href="http://www.statistik-berlin-brandenburg.de/produkte/opendata/geometrienOD.asp?Kat=6301">07/2012</a> ver&ouml;ffentlicht vom Amt f&uuml;r Statistik Berlin-Brandenburg und lizensiert als <em>CC-BY 1.0 DE</em>.
     </div>
-
+    <img src="http://stats.kiezatlas.de/piwik.php?idsite=2&amp;rec=1&amp;action_name=lor_seiten" style="border:0" alt="" />
     </body>
 </html>
 
