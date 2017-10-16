@@ -1,0 +1,35 @@
+/** Stylesheet for Berlins LOR-Pages, Copyright 2013, Malte Reißig <www.mikromedia.de> */
+
+body {
+    text-align: center;
+    font-family: sans-serif;
+}
+
+#aging-chart-labels {
+    font-size: 14px;
+}
+
+/** OpenLayers Specific Links */
+
+.lor-bar, .berlin-bar {
+    display: inline-block;
+    width: 30px;
+    height: 3px;
+    margin-left: 5px; margin-right: 5px;
+    padding: 0px;
+    padding-bottom: 5px;
+}
+
+.lor-bar {
+    background-color: #2f69bf;
+}
+
+.berlin-bar {
+    background-color: #a2bf2f;
+}
+
+#aging-chart {
+    margin-left: auto;
+    margin-right: auto;
+    width: 720px;
+}

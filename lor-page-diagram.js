@@ -4,17 +4,53 @@ function update_diagram (target, as_of, lor_id) {
     var year_string = ""
 
     if (as_of == 201312) {
+
         year_string = "2013/12"
+
     } else if (as_of == 201306) {
+
         year_string = "2013/06"
+
     } else if (as_of == 201406) {
+
         year_string = "2014/06"
+
+    } else if (as_of == 201412) {
+
+        year_string = "2014/12"
+
+    } else if (as_of == 201506) {
+
+        year_string = "2015/06"
+
+    } else if (as_of == 201512) {
+
+        year_string = "2015/12"
+
     } else if (as_of == 201206) {
+
         year_string = "2012/06"
+
     } else if (as_of == 201212) {
+
         year_string = "2012/12"
+
     } else if (as_of == 201112) {
+
         year_string = "2011/12"
+
+    } else if (as_of == 201606) {
+
+        year_string = "2016/06"
+
+    } else if (as_of == 201612) {
+
+        year_string = "2016/12"
+
+    } else if (as_of == 201706) {
+
+        year_string = "2017/06"
+
     }
 
     $('.diagram-layer-controls span').removeClass('selected')

@@ -1,0 +1,22 @@
+LOR-IDs mit einer zu kleinen Einwohnerzahl welche zum Schutz der Privatsphäre nicht in den LOR-Seiten veröffentlicht werden. Ausschlusskriterium ist aktuell das in dem LOR mindestens 250 Personen wohnhaft gemeldet sein müssen.
+
+
+1011102 - Großer Tiergarten
+3010104 - Lietzengraben
+4020204 - Olympiagelände
+4020314 - Messegelände
+4041133 - Güterbahnhof Grunewald
+4041239 - Stadion Wilmersdorf
+4061757 - Forst Grunewald
+9010102 - Am Treptower Park Nord
+
+
+0,0,0,0,0,0,0,0,0,0,0,0
+
+0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0
+
+
+Notizen:
+- 201412 E_Matrix hat keine führende Nullen...?
+
+
